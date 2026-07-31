@@ -21,3 +21,4 @@ export declare function resolveCluster(value?: string, fallback?: PowerPayCluste
 export declare function heliusRpcUrl(cluster: PowerPayCluster, apiKey: string): string;
 export declare function resolveRpc(options?: ResolveRpcOptions): ResolvedRpc;
 export declare function createClusterConnection(options?: ResolveRpcOptions): Connection;
+//# sourceMappingURL=clusters.d.ts.map

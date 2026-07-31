@@ -6,7 +6,9 @@ import {
 } from "node:fs";
 import { spawn } from "node:child_process";
 import { dirname, resolve } from "node:path";
+import { createServer } from "node:net";
 import { fileURLToPath } from "node:url";
+import { checkToolchainIntegrity } from "./lib/toolchain-integrity.mjs";
 
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = realpathSync(resolve(scriptDirectory, ".."));
@@ -20,6 +22,34 @@ function validateDirectory(path, label) {
   if (!statSync(path).isDirectory()) {
     throw new Error(`${label} is not a directory: ${path}`);
   }
+}
+
+
+async function portAvailable(port, host = "0.0.0.0") {
+  return await new Promise((resolveAvailability) => {
+    const server = createServer();
+    server.unref();
+    server.once("error", () => resolveAvailability(false));
+    server.listen({ port, host }, () => {
+      server.close(() => resolveAvailability(true));
+    });
+  });
+}
+
+async function availablePort(start = 5173, end = 5193) {
+  for (let port = start; port <= end; port += 1) {
+    if (await portAvailable(port)) return port;
+  }
+  throw new Error(`No available development port between ${start} and ${end}`);
+}
+
+function hasPortArgument(args) {
+  return args.some(
+    (argument, index) =>
+      argument === "--port" ||
+      argument.startsWith("--port=") ||
+      (index > 0 && args[index - 1] === "--port"),
+  );
 }
 
 function clearViteState() {
@@ -42,29 +72,56 @@ function viteExecutable() {
   return candidates.find(existsSync);
 }
 
-function runVite({ force = false, fallback = false } = {}) {
-  const executable = viteExecutable();
-  if (!executable) {
-    console.error(
-      "PowerPay could not locate Vite. Run `npm install` at the repository root.",
-    );
+async function runVite({ force = false, fallback = false } = {}) {
+  const integrity = await checkToolchainIntegrity(repositoryRoot);
+  if (!integrity.ok) {
+    console.error(`PowerPay detected a corrupted Vite installation: ${integrity.reason}`);
+    console.error("Run: npm run install:repair");
     process.exitCode = 1;
     return;
   }
 
+  const executable = viteExecutable();
+  if (!executable) {
+    console.error(
+      "PowerPay could not locate Vite or the install was interrupted.",
+    );
+    console.error("Run: npm run install:repair");
+    console.error("Then run: npm run dev:safe");
+    process.exitCode = 1;
+    return;
+  }
+
+  const selectedPort = hasPortArgument(forwardedArgs)
+    ? null
+    : await availablePort(
+        Number(process.env.POWERPAY_DEV_PORT ?? process.env.PORT ?? 5173),
+      );
+
+  if (selectedPort && selectedPort !== 5173) {
+    console.warn(
+      `Port 5173 is occupied; PowerPay will use http://localhost:${selectedPort}`,
+    );
+  }
+
+  const configFile = resolve(appDirectory, "vite.config.ts");
   const args = [
     executable,
+    appDirectory,
     "--config",
-    resolve(appDirectory, "vite.config.ts"),
+    configFile,
+    ...(selectedPort ? ["--port", String(selectedPort)] : []),
     ...(force ? ["--force"] : []),
     ...forwardedArgs,
   ];
 
   const child = spawn(process.execPath, args, {
-    cwd: appDirectory,
+    cwd: repositoryRoot,
     stdio: ["inherit", "pipe", "pipe"],
     env: {
       ...process.env,
+      PWD: repositoryRoot,
+      INIT_CWD: repositoryRoot,
       FORCE_COLOR: process.env.FORCE_COLOR ?? "1",
       RUST_BACKTRACE: process.env.RUST_BACKTRACE ?? "0",
       RUST_MIN_STACK: process.env.RUST_MIN_STACK ?? "8388608",
@@ -102,7 +159,7 @@ function runVite({ force = false, fallback = false } = {}) {
         "\nPowerPay detected a Rolldown panic. Clearing cached state and retrying with the stable fallback.\n",
       );
       clearViteState();
-      runVite({ force: true, fallback: true });
+      void runVite({ force: true, fallback: true });
       return;
     }
 
@@ -118,10 +175,9 @@ function runVite({ force = false, fallback = false } = {}) {
 
 validateDirectory(repositoryRoot, "Repository root");
 validateDirectory(appDirectory, "Application directory");
-process.chdir(appDirectory);
+process.chdir(repositoryRoot);
 
-if (process.cwd() !== appDirectory) {
-  console.log(`PowerPay Vite launcher using application cwd: ${appDirectory}`);
-}
+console.log(`PowerPay repository root: ${repositoryRoot}`);
+console.log(`PowerPay application root: ${appDirectory}`);
 
-runVite();
+await runVite();

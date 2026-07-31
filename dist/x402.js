@@ -2,14 +2,23 @@ export const X402_NETWORKS = {
     solanaMainnet: "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
     solanaDevnet: "solana:EtWTRABZaYq6iMfeYKouRu166VU2xqa1",
 };
+function bytesToBase64(bytes) {
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let output = "";
+    for (let index = 0; index < bytes.length; index += 3) {
+        const first = bytes[index] ?? 0;
+        const second = bytes[index + 1] ?? 0;
+        const third = bytes[index + 2] ?? 0;
+        const value = (first << 16) | (second << 8) | third;
+        output += alphabet[(value >> 18) & 63];
+        output += alphabet[(value >> 12) & 63];
+        output += index + 1 < bytes.length ? alphabet[(value >> 6) & 63] : "=";
+        output += index + 2 < bytes.length ? alphabet[value & 63] : "=";
+    }
+    return output;
+}
 function base64Json(value) {
-    const json = JSON.stringify(value);
-    if (typeof btoa === "function")
-        return btoa(unescape(encodeURIComponent(json)));
-    const NodeBuffer = globalThis.Buffer;
-    if (NodeBuffer)
-        return NodeBuffer.from(json).toString("base64");
-    throw new Error("No base64 encoder is available");
+    return bytesToBase64(new TextEncoder().encode(JSON.stringify(value)));
 }
 export function createPaymentRequired(requirement) {
     return new Response(JSON.stringify({ x402Version: 2, accepts: [requirement] }), {
@@ -42,3 +51,4 @@ export class X402FacilitatorClient {
         return response.json();
     }
 }
+//# sourceMappingURL=x402.js.map

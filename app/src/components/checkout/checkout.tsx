@@ -5,6 +5,7 @@ import { Cart } from "./cart";
 import { InvoicePreview } from "./invoice-preview";
 import { PaymentForm } from "./payment-form";
 import { demoInvoice } from "../../data/data";
+import { clients } from "../../data/clients";
 
 export function Checkout({
   walletAddress = null,
@@ -66,12 +67,22 @@ export function Checkout({
             onQuantityChange={updateQuantity}
             onRemove={remove}
           />
-          <PaymentForm
-            amount={`$${invoice.total}`}
-            walletAddress={walletAddress}
-            pending={pending}
-            onSubmit={pay}
-          />
+          <PaymentForm client={clients[0]} />
+          <p className="secure-note" role="status">
+            {pending
+              ? "Preparing payment…"
+              : walletAddress
+                ? `Wallet ${walletAddress} is ready`
+                : `Invoice total: $${invoice.total}`}
+          </p>
+          <button
+            className="primary-button payment-submit"
+            type="button"
+            disabled={pending}
+            onClick={pay}
+          >
+            {pending ? "Preparing…" : "Continue to payment"}
+          </button>
         </div>
         <aside className="checkout-layout__aside">
           <InvoicePreview invoice={invoice} />

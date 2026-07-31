@@ -23,3 +23,4 @@ export interface PowerPayRuntimeConfig {
     };
 }
 export declare function runtimeConfig(env?: Record<string, string | undefined>): PowerPayRuntimeConfig;
+//# sourceMappingURL=config.d.ts.map

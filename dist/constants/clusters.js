@@ -35,3 +35,4 @@ export const CLUSTERS = {
 export function isPowerPayCluster(value) {
     return value in CLUSTERS;
 }
+//# sourceMappingURL=clusters.js.map

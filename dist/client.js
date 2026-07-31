@@ -20,3 +20,4 @@ export class PowerPay {
         });
     }
 }
+//# sourceMappingURL=client.js.map

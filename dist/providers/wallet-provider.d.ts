@@ -1,3 +1,4 @@
+import React from "react";
 import type { Adapter } from "@solana/wallet-adapter-base";
 import type { PowerPayCluster } from "../constants/clusters.js";
 import type { RpcProvider } from "../rpc/clusters.js";
@@ -11,4 +12,5 @@ export interface WalletProviderProps {
     wallets?: Adapter[];
     autoConnect?: boolean;
 }
-export declare function WalletProvider({ children, cluster, rpcProvider, rpcUrl, wsUrl, heliusApiKey, wallets, autoConnect, }: WalletProviderProps): any;
+export declare function WalletProvider({ children, cluster, rpcProvider, rpcUrl, wsUrl, heliusApiKey, wallets, autoConnect, }: WalletProviderProps): React.JSX.Element;
+//# sourceMappingURL=wallet-provider.d.ts.map

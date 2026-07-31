@@ -22,3 +22,4 @@ export function explorerUrl(args) {
 }
 export const transactionExplorerUrl = (signature, cluster) => explorerUrl({ type: "tx", value: signature, cluster });
 export const addressExplorerUrl = (address, cluster) => explorerUrl({ type: "address", value: address, cluster });
+//# sourceMappingURL=explorer.js.map

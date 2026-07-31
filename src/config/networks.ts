@@ -1,3 +1,9 @@
+import { SOLANA_CLUSTERS as SOLANA_NETWORKS } from "../clusters/solana.js";
+import type {
+  ClusterDefinition,
+  SolanaCluster,
+} from "../clusters/types.js";
+
 export {
   CLUSTERS,
   clusterById,
@@ -11,10 +17,12 @@ export type {
   SuiNetwork,
 } from "../clusters/types.js";
 
-
-import { SOLANA_CLUSTERS as SOLANA_NETWORKS } from "../clusters/solana.js";
-import type { SolanaCluster as SolanaNetworkId } from "../clusters/types.js";
-
-export function networkConfig(cluster: SolanaNetworkId) {
-  return SOLANA_NETWORKS[cluster];
+export function networkConfig(
+  cluster: SolanaCluster,
+): ClusterDefinition {
+  const configuration = SOLANA_NETWORKS[cluster];
+  if (!configuration) {
+    throw new RangeError(`Unsupported Solana cluster: ${String(cluster)}`);
+  }
+  return configuration;
 }

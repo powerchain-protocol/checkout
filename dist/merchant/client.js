@@ -1,4 +1,5 @@
 import { createPaymentInstruction, createTokenPaymentInstruction, initializeMerchantInstruction, settlePaymentInstruction, settleTokenPaymentInstruction, } from "../solana/instructions.js";
+import { merchantPda } from "../solana/pdas.js";
 export class MerchantClient {
     profile;
     constructor(profile) {
@@ -36,7 +37,7 @@ export class MerchantClient {
     settleSol(args) {
         return settlePaymentInstruction({
             authority: this.profile.authority,
-            merchant: args.payment, // retained only for backward compatibility; prefer explicit helper
+            merchant: merchantPda(this.profile.authority)[0],
             payment: args.payment,
             treasury: args.treasury ?? this.profile.treasury,
             feeTreasury: args.feeTreasury ?? this.profile.feeTreasury,
@@ -55,3 +56,4 @@ export class MerchantClient {
         });
     }
 }
+//# sourceMappingURL=client.js.map

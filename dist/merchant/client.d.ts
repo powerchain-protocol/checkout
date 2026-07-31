@@ -29,3 +29,4 @@ export declare class MerchantClient {
         tokenProgram: PublicKey;
     }): TransactionInstruction;
 }
+//# sourceMappingURL=client.d.ts.map

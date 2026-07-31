@@ -59,3 +59,4 @@ export function createClusterConnection(options = {}) {
     };
     return new Connection(resolved.rpcUrl, config);
 }
+//# sourceMappingURL=clusters.js.map

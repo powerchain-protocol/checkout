@@ -17,3 +17,4 @@ export async function rpcHealth(connection = createPowerPayConnection()) {
     ]);
     return { slot, blockHeight, version, rpcEndpoint: connection.rpcEndpoint };
 }
+//# sourceMappingURL=connection.js.map

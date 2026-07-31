@@ -38,7 +38,13 @@ export type {
 export * from "./constants/programs.js";
 export * from "./rpc/clusters.js";
 export * from "./types/checkout.js";
-export * from "./validate.js";
+export {
+  CheckoutValidationError,
+  validatePublicKey,
+  validateCheckoutRequest,
+  shortenPublicKey,
+} from "./validate.js";
+export type { ValidationIssue } from "./validate.js";
 export * from "./hooks/use-mobile.js";
 export * from "./context/cluster-context.js";
 export * from "./providers/wallet-provider.js";
@@ -77,7 +83,23 @@ export {
   createId,
   uuid,
 } from "./utils/index.js";
-export * from "./lib/index.js";
+export {
+  PowerPayApiClient,
+} from "./lib/api.js";
+export type {
+  PowerPayApiClientOptions,
+} from "./lib/api.js";
+export * from "./lib/assets.js";
+export * from "./lib/currencies.js";
+export * from "./lib/helius.js";
+export * from "./lib/powerpay.js";
+export {
+  PythPriceClient as HermesPythPriceClient,
+} from "./lib/pyth.js";
+export type { PythPrice } from "./lib/pyth.js";
+export * from "./lib/rpc.js";
+export * from "./lib/solana.js";
+export * from "./lib/solana-pay.js";
 export * from "./types/api.js";
 export * from "./types/common.js";
 export * from "./types/merchant.js";
@@ -126,7 +148,6 @@ export * from "./context/network-context.js";
 
 export * from "./solana/finality.js";
 
-export * from "./lib/api.js";
 
 export * from "./api/index.js";
 export * from "./types/sdk.js";

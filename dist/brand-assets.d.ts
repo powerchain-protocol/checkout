@@ -12,3 +12,4 @@ export declare const POWERPAY_BRAND_ASSETS: {
     readonly metadata: "/metadata.json";
     readonly manifest: "/manifest.webmanifest";
 };
+//# sourceMappingURL=brand-assets.d.ts.map

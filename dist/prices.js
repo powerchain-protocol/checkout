@@ -112,3 +112,4 @@ export function convertAmount(amount, fromUsd, toUsd) {
         throw new RangeError("Invalid conversion inputs");
     return amount * fromUsd / toUsd;
 }
+//# sourceMappingURL=prices.js.map

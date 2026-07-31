@@ -411,3 +411,121 @@ npm run programs:doctor
 
 A successful structural fallback does not mean deployable `.so` files were
 created. Install Rust and the Solana CLI before deployment.
+
+
+## Backend and expanded SDK resources
+
+PowerPay API v1 now includes configuration discovery, runtime metrics, roles,
+refunds, and webhook registration in addition to payments, checkout sessions,
+clients, POS, integrations, trusted tokens, and cross-border settlement.
+
+```ts
+const sdk = createPowerPaySdk({ baseUrl: "http://localhost:8080" });
+
+await sdk.refunds.create({
+  paymentId: "pay_123",
+  amount: "25.00",
+  reason: "customer_request",
+});
+
+await sdk.webhooks.create({
+  url: "https://merchant.example/webhooks/powerpay",
+  events: ["payment.confirmed", "payment.failed"],
+});
+
+const socket = sdk.websocket({ maximumReconnectAttempts: 12 });
+socket.onState(console.log);
+socket.connect();
+```
+
+See `docs/BACKEND_API_CONFIG.md` and `docs/API_WEBSOCKETS.md`.
+
+
+## Production readiness check
+
+Run the coordinated production gate:
+
+```bash
+npm run production:check
+```
+
+This validates public SDK exports, TypeScript, SDK tests, the production Vite
+bundle, Docker files, and release-version consistency.
+
+The safe development launcher selects the first available port from 5173
+through 5193. To require a specific port:
+
+```bash
+npm run dev:safe -- --port 5173
+```
+
+Dockerfile instructions such as `FROM`, `COPY`, and `CMD` belong in a
+`Dockerfile`; do not paste them into the shell. Build the image with:
+
+```bash
+npm run docker:build
+npm run docker:run
+```
+
+
+Before a production deployment, review runtime dependency findings without
+automatically applying breaking upgrades:
+
+```bash
+npm run security:audit
+```
+
+Do not use `npm audit fix --force` without reviewing API, wallet-adapter, and
+React compatibility. The CI workflow runs the complete production gate and a
+package dry run on every pull request.
+
+
+## Recovering from a killed dependency install
+
+When npm is killed, Vite, TypeScript, and `@types/node` may be only partially
+installed. Symptoms include:
+
+```text
+PowerPay could not locate Vite
+Cannot find type definition file for 'node'
+```
+
+Repair the workspace from the repository root:
+
+```bash
+cd /workspaces/powerpay
+npm run install:repair
+npm run typecheck
+npm run dev:safe
+```
+
+The repair command removes stale `node_modules` and lock state, then installs
+with reduced concurrency. PowerPay no longer depends on the
+`@solana/wallet-adapter-wallets` meta-package; compatible browser wallets are
+discovered through Wallet Standard.
+
+
+## Local SDK dependency and package manager
+
+The demo application consumes the SDK from this repository:
+
+```json
+"@powerchain-protocol/powerpay-checkout-sdk": "file:.."
+```
+
+This package is not fetched from the npm registry during workspace
+development. A registry `E404` means an older `app/package.json` or stale
+install state is still present.
+
+Repair it with:
+
+```bash
+cd /workspaces/powerpay
+rm -rf node_modules app/node_modules package-lock.json
+npm run local:sdk:validate
+npm run install:local
+npm run build
+```
+
+PowerPay is configured for npm through the root `packageManager` field. Use
+`npm run build`, not `yarn run build`.

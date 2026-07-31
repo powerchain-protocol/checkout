@@ -1761,12 +1761,3 @@ input:focus-visible {
     transition: none !important;
   }
 }
-
-
-/* Explicit dark full-logo wordmark */
-@media (prefers-color-scheme: dark) {
-  .pp-startup__wordmark span,
-  .pp-startup__wordmark strong {
-    color: #ffffff;
-  }
-}

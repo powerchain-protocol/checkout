@@ -3,6 +3,8 @@ import {
   POWERPAY_APP_ROUTES,
   type PowerPayAppRoute,
 } from "@powerpay/sdk";
+
+export type AppRoute = PowerPayAppRoute;
 import {
   APP_ROUTES,
   hrefForRoute,

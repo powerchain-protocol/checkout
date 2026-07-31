@@ -29,3 +29,4 @@ export declare class X402FacilitatorClient {
     verify(paymentPayload: unknown, requirement: X402PaymentRequirement): Promise<unknown>;
     settle(paymentPayload: unknown, requirement: X402PaymentRequirement): Promise<unknown>;
 }
+//# sourceMappingURL=x402.d.ts.map

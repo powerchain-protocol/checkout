@@ -32,7 +32,7 @@ export function Sidebar({ activeRoute }: { activeRoute: AppRoute }) {
         {items.map(({ route, label, icon: Icon }) => (
           <a
             key={route}
-            href={`#${route}`}
+            href={`#/${route}`}
             className={activeRoute === route ? "selected" : ""}
             aria-current={activeRoute === route ? "page" : undefined}
           >

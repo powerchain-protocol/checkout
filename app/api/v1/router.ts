@@ -16,6 +16,15 @@ import {
   websocketInfoHandler,
 } from "./system.js";
 import { trustedTokensHandler } from "./trusted-tokens.js";
+import {
+  configHandler,
+  metricsHandler,
+  refundHandler,
+  refundsHandler,
+  rolesHandler,
+  webhookHandler,
+  webhooksHandler,
+} from "./backend.js";
 
 export const API_V1_PREFIX = "/api/v1";
 
@@ -40,6 +49,21 @@ const routes: Route[] = [
   { pattern: /^\/cors\/?$/, handler: corsHandler },
   { pattern: /^\/trusted-tokens\/?$/, handler: trustedTokensHandler },
   { pattern: /^\/cross-border\/?$/, handler: createCrossBorderHandler },
+  { pattern: /^\/refunds\/?$/, handler: refundsHandler },
+  {
+    pattern: /^\/refunds\/([^/]+)\/?$/,
+    handler: refundHandler,
+    params: ["refundId"],
+  },
+  { pattern: /^\/webhooks\/?$/, handler: webhooksHandler },
+  {
+    pattern: /^\/webhooks\/([^/]+)\/?$/,
+    handler: webhookHandler,
+    params: ["webhookId"],
+  },
+  { pattern: /^\/metrics\/?$/, handler: metricsHandler },
+  { pattern: /^\/config\/?$/, handler: configHandler },
+  { pattern: /^\/roles\/?$/, handler: rolesHandler },
 ];
 
 function normalizePath(path: string): string {

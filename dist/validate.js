@@ -54,7 +54,8 @@ export function validateCheckoutRequest(request) {
         throw new CheckoutValidationError(issues);
     return request;
 }
-export function shortenAddress(address, size = 4) {
+export function shortenPublicKey(address, size = 4) {
     const value = address.toString();
     return `${value.slice(0, size)}…${value.slice(-size)}`;
 }
+//# sourceMappingURL=validate.js.map

@@ -4,3 +4,4 @@ export type CheckoutSession = {
     amount: number;
     currency: string;
 };
+//# sourceMappingURL=checkout.d.ts.map

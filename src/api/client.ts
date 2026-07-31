@@ -11,6 +11,9 @@ import {
   IntegrationsResourceClient,
   PaymentsResourceClient,
   SessionsResourceClient,
+  RefundsResourceClient,
+  WebhooksResourceClient,
+  SystemResourceClient,
 } from "./resources.js";
 
 export class PowerPaySdk {
@@ -21,6 +24,9 @@ export class PowerPaySdk {
   readonly clients: ClientsResourceClient;
   readonly checkout: CheckoutResourceClient;
   readonly integrations: IntegrationsResourceClient;
+  readonly refunds: RefundsResourceClient;
+  readonly webhooks: WebhooksResourceClient;
+  readonly system: SystemResourceClient;
 
   websocket(
     options: Omit<PowerPayWebSocketOptions, "url"> & { url?: string } = {},
@@ -43,6 +49,9 @@ export class PowerPaySdk {
     this.clients = new ClientsResourceClient(this.transport);
     this.checkout = new CheckoutResourceClient(this.transport);
     this.integrations = new IntegrationsResourceClient(this.transport);
+    this.refunds = new RefundsResourceClient(this.transport);
+    this.webhooks = new WebhooksResourceClient(this.transport);
+    this.system = new SystemResourceClient(this.transport);
   }
 }
 

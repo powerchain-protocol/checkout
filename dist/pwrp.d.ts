@@ -4,7 +4,7 @@ export declare const POWERPAY_TOKEN: {
     readonly symbol: "PWRP";
     readonly decimals: 6;
     readonly maximumSupply: 1000000000n;
-    readonly tokenProgram: any;
+    readonly tokenProgram: PublicKey;
 };
 export interface PowerPayMintOptions {
     /** Explicit mint address. Preferred for reusable SDK code. */
@@ -21,3 +21,4 @@ export interface PowerPayMintOptions {
 export declare function getPowerPayMint(options?: PowerPayMintOptions | string): PublicKey;
 export declare function pwrpToAtomic(amount: string | number): bigint;
 export declare function atomicToPwrp(amount: bigint): string;
+//# sourceMappingURL=pwrp.d.ts.map

@@ -32,3 +32,4 @@ export declare class PythPriceClient {
     fetchPrices(assets?: PriceAsset[]): Promise<Partial<Record<PriceAsset, PricePoint>>>;
 }
 export declare function convertAmount(amount: number, fromUsd: number, toUsd: number): number;
+//# sourceMappingURL=prices.d.ts.map

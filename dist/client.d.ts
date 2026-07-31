@@ -12,3 +12,4 @@ export declare class PowerPay {
         reference: string;
     }): Promise<unknown>;
 }
+//# sourceMappingURL=client.d.ts.map

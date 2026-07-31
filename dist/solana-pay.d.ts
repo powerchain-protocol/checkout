@@ -10,3 +10,4 @@ export interface SolanaPayTransferRequest {
 }
 export declare function createSolanaPayUrl(request: SolanaPayTransferRequest): URL;
 export declare function createSolanaPayTransactionRequest(endpoint: string, label?: string, message?: string): URL;
+//# sourceMappingURL=solana-pay.d.ts.map

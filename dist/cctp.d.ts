@@ -23,3 +23,4 @@ export declare class CctpAttestationClient {
     constructor(endpoint?: string);
     fetchMessage(messageHash: string, fetchImpl?: typeof fetch): Promise<unknown>;
 }
+//# sourceMappingURL=cctp.d.ts.map

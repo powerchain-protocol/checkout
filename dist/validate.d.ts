@@ -10,4 +10,5 @@ export declare class CheckoutValidationError extends Error {
 }
 export declare function validatePublicKey(value: string | PublicKey, field?: string): PublicKey;
 export declare function validateCheckoutRequest(request: CheckoutRequest): CheckoutRequest;
-export declare function shortenAddress(address: string | PublicKey, size?: number): string;
+export declare function shortenPublicKey(address: string | PublicKey, size?: number): string;
+//# sourceMappingURL=validate.d.ts.map

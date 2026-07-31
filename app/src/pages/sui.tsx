@@ -35,7 +35,7 @@ export function SuiPage() {
           </p>
         </div>
         <div className="web3-icon-cloud">
-          <NetworkIcon network="sui" size={48} variant="branded" />
+          <NetworkIcon name="sui" size={48} variant="branded" />
           <TokenIcon symbol="SUI" size={48} variant="branded" />
           <CubeIcon width={34} height={34} />
         </div>

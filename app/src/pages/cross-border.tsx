@@ -28,7 +28,7 @@ export function CrossBorderPage() {
           </p>
         </div>
         <div className="web3-icon-cloud">
-          <NetworkIcon network="solana" size={46} variant="branded" />
+          <NetworkIcon name="solana" size={46} variant="branded" />
           <TokenIcon symbol="USDC" size={46} variant="branded" />
           <GlobeIcon width={34} height={34} />
         </div>
@@ -59,7 +59,7 @@ export function CrossBorderPage() {
             <div className="route-selector">
               <div>
                 <span>Source</span>
-                <strong><NetworkIcon network="solana" size={24} variant="branded" /> Solana</strong>
+                <strong><NetworkIcon name="solana" size={24} variant="branded" /> Solana</strong>
               </div>
               <ArrowRightIcon />
               <div>

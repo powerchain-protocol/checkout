@@ -37,3 +37,4 @@ export function atomicToPwrp(amount) {
     const fraction = (amount % 1000000n).toString().padStart(6, "0").replace(/0+$/, "");
     return fraction ? `${whole}.${fraction}` : whole.toString();
 }
+//# sourceMappingURL=pwrp.js.map

@@ -6,7 +6,7 @@ WORKDIR /workspace
 COPY package.json package-lock.json* .npmrc ./
 COPY app/package.json ./app/package.json
 
-RUN npm install --workspaces --include-workspace-root
+RUN if [ -f package-lock.json ]; then npm ci --workspaces --include-workspace-root; else npm install --workspaces --include-workspace-root; fi
 
 FROM dependencies AS build
 WORKDIR /workspace
@@ -16,7 +16,7 @@ COPY . .
 ENV NODE_ENV=production
 RUN npm run app:build
 
-FROM nginx:1.27-alpine AS runtime
+FROM nginx:1.27.5-alpine AS runtime
 
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /workspace/app/dist /usr/share/nginx/html

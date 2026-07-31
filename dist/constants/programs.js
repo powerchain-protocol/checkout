@@ -13,3 +13,4 @@ export function programIdsForCluster(cluster, env = {}) {
         usdcMint: optionalKey(env[`VITE_USDC_MINT_${suffix}`] ?? env.VITE_USDC_MINT),
     };
 }
+//# sourceMappingURL=programs.js.map

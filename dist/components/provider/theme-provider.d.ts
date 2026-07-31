@@ -1,3 +1,4 @@
+import React from "react";
 export type PowerPayTheme = "light" | "dark" | "system";
 interface ThemeContextValue {
     theme: PowerPayTheme;
@@ -10,6 +11,7 @@ export interface ThemeProviderProps {
     defaultTheme?: PowerPayTheme;
     storageKey?: string;
 }
-export declare function ThemeProvider({ children, defaultTheme, storageKey, }: ThemeProviderProps): any;
+export declare function ThemeProvider({ children, defaultTheme, storageKey, }: ThemeProviderProps): React.JSX.Element;
 export declare function usePowerPayTheme(): ThemeContextValue;
 export {};
+//# sourceMappingURL=theme-provider.d.ts.map

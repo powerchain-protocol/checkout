@@ -46,7 +46,7 @@ export function InformationsPage() {
           </p>
         </div>
         <div className="web3-icon-cloud" aria-label="Supported Web3 services">
-          <NetworkIcon network="solana" size={48} variant="branded" />
+          <NetworkIcon name="solana" size={48} variant="branded" />
           <TokenIcon symbol="SOL" size={48} variant="branded" />
           <TokenIcon symbol="USDC" size={48} variant="branded" />
           <WalletIcon name="phantom" size={48} variant="branded" />

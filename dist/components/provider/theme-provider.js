@@ -42,3 +42,4 @@ export function usePowerPayTheme() {
         throw new Error("usePowerPayTheme must be used inside ThemeProvider");
     return context;
 }
+//# sourceMappingURL=theme-provider.js.map

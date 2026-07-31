@@ -282,9 +282,3 @@ Before release, confirm:
 - [Blank-screen recovery](../docs/APP_BLANK_SCREEN.md)
 - [Docker](../docs/DOCKER.md)
 - [CORS and Codespaces](../docs/CORS_AND_CODESPACES.md)
-
-
-## API documentation
-
-The application serves Swagger UI at `/api-docs/` and the OpenAPI 3.1 document
-at `/swagger.yaml`. API discovery is available from `/api/v1`.

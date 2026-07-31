@@ -20,12 +20,22 @@ const nginx = readFileSync("docker/nginx.conf", "utf8");
 
 for (const marker of [
   "npm run app:build",
-  "FROM nginx:1.27-alpine",
   "HEALTHCHECK",
 ]) {
   if (!dockerfile.includes(marker)) {
     throw new Error(`Dockerfile missing ${marker}`);
   }
+}
+
+if (!/FROM nginx:1\.27(?:\.\d+)?-alpine AS runtime/.test(dockerfile)) {
+  throw new Error("Dockerfile must use a pinned nginx 1.27 Alpine runtime");
+}
+
+if (
+  !dockerfile.includes("npm ci --workspaces --include-workspace-root") &&
+  !dockerfile.includes("npm install --workspaces --include-workspace-root")
+) {
+  throw new Error("Dockerfile is missing workspace dependency installation");
 }
 
 for (const marker of [

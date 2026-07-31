@@ -1,15 +1,14 @@
-import React, { useMemo } from "react";
+import React from "react";
 import {
   ConnectionProvider,
   WalletProvider as SolanaWalletProvider,
 } from "@solana/wallet-adapter-react";
 import type { Adapter } from "@solana/wallet-adapter-base";
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { ClusterProvider, usePowerPayCluster } from "../context/cluster-context.js";
+import {
+  ClusterProvider,
+  usePowerPayCluster,
+} from "../context/cluster-context.js";
 import type { PowerPayCluster } from "../constants/clusters.js";
 import type { RpcProvider } from "../rpc/clusters.js";
 
@@ -26,18 +25,13 @@ export interface WalletProviderProps {
 
 function WalletRuntime({
   children,
-  wallets: suppliedWallets,
+  wallets = [],
   autoConnect = true,
-}: Omit<WalletProviderProps, "cluster" | "rpcProvider" | "rpcUrl" | "wsUrl" | "heliusApiKey">) {
+}: Omit<
+  WalletProviderProps,
+  "cluster" | "rpcProvider" | "rpcUrl" | "wsUrl" | "heliusApiKey"
+>) {
   const { rpcUrl } = usePowerPayCluster();
-  const wallets = useMemo<Adapter[]>(
-    () =>
-      suppliedWallets ?? [
-        new PhantomWalletAdapter(),
-        new SolflareWalletAdapter(),
-      ],
-    [suppliedWallets],
-  );
 
   return (
     <ConnectionProvider endpoint={rpcUrl}>

@@ -9,6 +9,7 @@ export declare function createPowerPayConnection(options?: RpcConnectionOptions)
 export declare function rpcHealth(connection?: Connection): Promise<{
     slot: number;
     blockHeight: number;
-    version: any;
+    version: import("@solana/web3.js").Version;
     rpcEndpoint: string;
 }>;
+//# sourceMappingURL=connection.d.ts.map

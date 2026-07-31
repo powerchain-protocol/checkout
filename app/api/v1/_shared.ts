@@ -17,7 +17,7 @@ export interface ApiResponse<T = unknown> {
   body: T;
 }
 
-const ALLOWED_METHODS = ["GET", "POST", "PATCH", "DELETE", "OPTIONS"] as const;
+const ALLOWED_METHODS = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"] as const;
 const DEFAULT_ALLOWED_HEADERS = [
   "authorization",
   "content-type",
@@ -173,9 +173,11 @@ export function methodNotAllowed(
 
 export function optionsResponse(request: ApiRequest): ApiResponse<null | ApiErrorBody> {
   const origin = header(request, "origin");
-  const requestedMethod =
-    header(request, "access-control-request-method")?.toUpperCase() ??
-    "POST";
+  const requestedMethodHeader = header(
+    request,
+    "access-control-request-method",
+  );
+  const requestedMethod = requestedMethodHeader?.toUpperCase() ?? "POST";
   const requested = requestedHeaders(request);
 
   if (!origin || !selectedOrigin(origin)) {

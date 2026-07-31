@@ -43,9 +43,15 @@ if (app.scripts.check.includes("pnpm")) {
 if (!app.scripts.build.includes("run-vite-build-safe.mjs")) {
   throw new Error("App build is not using the CWD-safe Vite build launcher");
 }
-if (app.dependencies["@powerchain-protocol/powerpay-checkout-sdk"]
-    !== root.version) {
-  throw new Error("App SDK dependency does not match the root version");
+const appSdkDependency =
+  app.dependencies["@powerchain-protocol/powerpay-checkout-sdk"];
+if (
+  appSdkDependency !== root.version &&
+  appSdkDependency !== "file:.."
+) {
+  throw new Error(
+    "App SDK dependency must match the root version or use file:..",
+  );
 }
 
 for (const path of [

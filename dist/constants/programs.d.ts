@@ -7,3 +7,4 @@ export interface ClusterProgramIds {
     usdcMint?: PublicKey;
 }
 export declare function programIdsForCluster(cluster: PowerPayCluster, env?: Record<string, string | undefined>): ClusterProgramIds;
+//# sourceMappingURL=programs.d.ts.map

@@ -4,6 +4,14 @@ import type {
 } from "../types/api.js";
 import { POWERPAY_WEBSOCKET_PROTOCOL } from "../constants/events.js";
 
+export type PowerPayWebSocketState =
+  | "idle"
+  | "connecting"
+  | "open"
+  | "reconnecting"
+  | "closed"
+  | "error";
+
 export interface PowerPayWebSocketOptions {
   url: string;
   token?: string;
@@ -13,6 +21,8 @@ export interface PowerPayWebSocketOptions {
   initialReconnectDelayMs?: number;
   maximumReconnectDelayMs?: number;
   reconnectMultiplier?: number;
+  reconnectJitter?: number;
+  maximumReconnectAttempts?: number;
   heartbeatTimeoutMs?: number;
 }
 
@@ -26,10 +36,15 @@ export class PowerPayWebSocketClient {
   private heartbeatTimer: ReturnType<typeof setTimeout> | null = null;
   private reconnectAttempt = 0;
   private manuallyClosed = false;
+  private stateValue: PowerPayWebSocketState = "idle";
   private readonly listeners = new Map<
     PowerPayEventType | "*",
     Set<PowerPayEventListener>
   >();
+  private readonly stateListeners = new Set<
+    (state: PowerPayWebSocketState) => void
+  >();
+  private readonly errorListeners = new Set<(error: Event | Error) => void>();
 
   constructor(readonly options: PowerPayWebSocketOptions) {}
 
@@ -37,51 +52,60 @@ export class PowerPayWebSocketClient {
     return this.socket?.readyState === WebSocket.OPEN;
   }
 
+  get state(): PowerPayWebSocketState {
+    return this.stateValue;
+  }
+
   connect(): void {
-    if (
-      this.socket?.readyState === WebSocket.OPEN ||
-      this.socket?.readyState === WebSocket.CONNECTING
-    ) {
+    if (this.connected || this.socket?.readyState === WebSocket.CONNECTING) {
       return;
     }
-
     this.manuallyClosed = false;
+    this.setState(this.reconnectAttempt ? "reconnecting" : "connecting");
+
     const url = new URL(this.options.url);
-    if (this.options.token) {
-      url.searchParams.set("access_token", this.options.token);
-    }
+    if (this.options.token) url.searchParams.set("access_token", this.options.token);
     if (this.options.merchantId) {
       url.searchParams.set("merchant_id", this.options.merchantId);
     }
 
-    this.socket = new WebSocket(
-      url,
-      this.options.protocols ?? POWERPAY_WEBSOCKET_PROTOCOL,
-    );
+    try {
+      this.socket = new WebSocket(
+        url,
+        this.options.protocols ?? POWERPAY_WEBSOCKET_PROTOCOL,
+      );
+    } catch (error) {
+      this.handleError(error instanceof Error ? error : new Error(String(error)));
+      this.scheduleReconnect();
+      return;
+    }
 
     this.socket.addEventListener("open", () => {
       this.reconnectAttempt = 0;
+      this.setState("open");
       this.resetHeartbeat();
     });
-
     this.socket.addEventListener("message", (message) => {
       this.resetHeartbeat();
       try {
         this.emit(JSON.parse(String(message.data)) as PowerPayEvent);
-      } catch {
-        // Ignore malformed frames without interrupting checkout.
+      } catch (error) {
+        this.handleError(
+          error instanceof Error ? error : new Error("Malformed WebSocket frame"),
+        );
       }
     });
-
     this.socket.addEventListener("close", () => {
       this.clearHeartbeat();
       this.socket = null;
       if (!this.manuallyClosed && this.options.reconnect !== false) {
         this.scheduleReconnect();
+      } else {
+        this.setState("closed");
       }
     });
-
-    this.socket.addEventListener("error", () => {
+    this.socket.addEventListener("error", (error) => {
+      this.handleError(error);
       this.socket?.close();
     });
   }
@@ -92,21 +116,31 @@ export class PowerPayWebSocketClient {
     this.clearHeartbeat();
     this.socket?.close(code, reason);
     this.socket = null;
+    this.setState("closed");
   }
 
   subscribe<T = unknown>(
     type: PowerPayEventType | "*",
     listener: PowerPayEventListener<T>,
   ): () => void {
-    const listeners =
-      this.listeners.get(type) ?? new Set<PowerPayEventListener>();
+    const listeners = this.listeners.get(type) ?? new Set<PowerPayEventListener>();
     listeners.add(listener as PowerPayEventListener);
     this.listeners.set(type, listeners);
-
     return () => {
       listeners.delete(listener as PowerPayEventListener);
-      if (listeners.size === 0) this.listeners.delete(type);
+      if (!listeners.size) this.listeners.delete(type);
     };
+  }
+
+  onState(listener: (state: PowerPayWebSocketState) => void): () => void {
+    this.stateListeners.add(listener);
+    listener(this.stateValue);
+    return () => this.stateListeners.delete(listener);
+  }
+
+  onError(listener: (error: Event | Error) => void): () => void {
+    this.errorListeners.add(listener);
+    return () => this.errorListeners.delete(listener);
   }
 
   send(type: string, data?: unknown): boolean {
@@ -115,25 +149,36 @@ export class PowerPayWebSocketClient {
     return true;
   }
 
+  private setState(state: PowerPayWebSocketState): void {
+    this.stateValue = state;
+    for (const listener of this.stateListeners) listener(state);
+  }
+
+  private handleError(error: Event | Error): void {
+    this.setState("error");
+    for (const listener of this.errorListeners) listener(error);
+  }
+
   private emit(event: PowerPayEvent): void {
-    for (const listener of this.listeners.get(event.type) ?? []) {
-      listener(event);
-    }
-    for (const listener of this.listeners.get("*") ?? []) {
-      listener(event);
-    }
+    for (const listener of this.listeners.get(event.type) ?? []) listener(event);
+    for (const listener of this.listeners.get("*") ?? []) listener(event);
   }
 
   private scheduleReconnect(): void {
+    const maximumAttempts = this.options.maximumReconnectAttempts ?? Infinity;
+    if (this.reconnectAttempt >= maximumAttempts) {
+      this.setState("closed");
+      return;
+    }
     this.clearReconnect();
     const initial = this.options.initialReconnectDelayMs ?? 500;
     const maximum = this.options.maximumReconnectDelayMs ?? 15_000;
     const multiplier = this.options.reconnectMultiplier ?? 1.8;
-    const delay = Math.min(
-      maximum,
-      initial * multiplier ** this.reconnectAttempt,
-    );
+    const jitter = Math.max(0, Math.min(1, this.options.reconnectJitter ?? 0.2));
+    const base = Math.min(maximum, initial * multiplier ** this.reconnectAttempt);
+    const delay = Math.round(base * (1 - jitter + Math.random() * jitter * 2));
     this.reconnectAttempt += 1;
+    this.setState("reconnecting");
     this.reconnectTimer = setTimeout(() => this.connect(), delay);
   }
 

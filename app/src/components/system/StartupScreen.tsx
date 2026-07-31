@@ -1,10 +1,8 @@
-import type { CSSProperties } from "react";
 import {
   CheckCircledIcon,
   GlobeIcon,
   LockClosedIcon,
   LightningBoltIcon,
-  ShieldCheckIcon,
 } from "@radix-ui/react-icons";
 
 export type StartupPhase =
@@ -87,9 +85,15 @@ export function StartupScreen({
           </div>
         </div>
 
-<div
+        <div className="startup-energy-divider" aria-hidden="true">
+          <span />
+          <LightningBoltIcon width={18} height={18} />
+          <span />
+        </div>
+
+        <div
           className={`startup-progress${phase === "ready" ? " startup-progress--complete" : ""}`}
-          style={{ "--startup-progress": `${copy.progress}%` } as CSSProperties}
+          style={{ "--startup-progress": `${copy.progress}%` } as React.CSSProperties}
           role="progressbar"
           aria-label="PowerPay startup progress"
           aria-valuemin={0}
@@ -114,7 +118,7 @@ export function StartupScreen({
 
         <div className="startup-assurance" aria-label="Startup security">
           <span>
-            <ShieldCheckIcon />
+            <LockClosedIcon />
             Secure
           </span>
           <span>
@@ -132,7 +136,7 @@ export function StartupScreen({
         <footer className="startup-capabilities">
           <div>
             <span className="startup-capabilities__icon">
-              <ShieldCheckIcon />
+              <LockClosedIcon />
             </span>
             <span>
               <strong>Powered by PowerChain</strong>

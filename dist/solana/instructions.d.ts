@@ -1,26 +1,27 @@
 import { PublicKey, TransactionInstruction } from "@solana/web3.js";
-export declare function initializeMerchantInstruction(authority: PublicKey, treasury: PublicKey, feeTreasury: PublicKey, feeBps: number): TransactionInstruction;
-export declare function updateMerchantInstruction(authority: PublicKey, feeBps: number, paused: boolean): TransactionInstruction;
-export declare function createPaymentInstruction(args: {
+export declare const POWERPAY_INSTRUCTION: {
+    readonly initializeMerchant: 0;
+    readonly updateMerchant: 1;
+    readonly createPayment: 2;
+    readonly settlePayment: 3;
+    readonly refundPayment: 4;
+    readonly createTokenPayment: 5;
+    readonly settleTokenPayment: 6;
+    readonly refundTokenPayment: 7;
+};
+export declare function initializeMerchantInstruction(authority: PublicKey, treasury: PublicKey, feeTreasuryOrFeeBps: PublicKey | number, feeBpsArg?: number): TransactionInstruction;
+export interface CreatePaymentInstructionInput {
     payer: PublicKey;
     merchant: PublicKey;
-    reference: Uint8Array;
+    reference: PublicKey | Uint8Array;
     amount: bigint;
     expiresAt: bigint;
-}): TransactionInstruction;
-export declare function settlePaymentInstruction(args: {
-    authority: PublicKey;
-    merchant: PublicKey;
-    payment: PublicKey;
-    treasury: PublicKey;
-    feeTreasury: PublicKey;
-}): TransactionInstruction;
-export declare function refundPaymentInstruction(caller: PublicKey, payment: PublicKey, payer: PublicKey): TransactionInstruction;
-export declare function recordSettlementInstruction(network: PublicKey, authority: PublicKey, payment: PublicKey, amount: bigint): TransactionInstruction;
-export declare function createTokenPaymentInstruction(args: {
+}
+export declare function createPaymentInstruction(input: CreatePaymentInstructionInput): TransactionInstruction;
+export declare function createTokenPaymentInstruction(input: {
     payer: PublicKey;
     merchant: PublicKey;
-    reference: Uint8Array;
+    reference: PublicKey | Uint8Array;
     amount: bigint;
     expiresAt: bigint;
     payerTokenAccount: PublicKey;
@@ -29,7 +30,14 @@ export declare function createTokenPaymentInstruction(args: {
     tokenProgram: PublicKey;
     decimals: number;
 }): TransactionInstruction;
-export declare function settleTokenPaymentInstruction(args: {
+export declare function settlePaymentInstruction(input: {
+    authority: PublicKey;
+    merchant: PublicKey;
+    payment: PublicKey;
+    treasury: PublicKey;
+    feeTreasury: PublicKey;
+}): TransactionInstruction;
+export declare function settleTokenPaymentInstruction(input: {
     authority: PublicKey;
     merchant: PublicKey;
     payment: PublicKey;
@@ -39,12 +47,9 @@ export declare function settleTokenPaymentInstruction(args: {
     mint: PublicKey;
     tokenProgram: PublicKey;
 }): TransactionInstruction;
-export declare function refundTokenPaymentInstruction(args: {
+export declare function refundPaymentInstruction(input: {
     caller: PublicKey;
     payment: PublicKey;
     payer: PublicKey;
-    escrowTokenAccount: PublicKey;
-    payerTokenAccount: PublicKey;
-    mint: PublicKey;
-    tokenProgram: PublicKey;
 }): TransactionInstruction;
+//# sourceMappingURL=instructions.d.ts.map

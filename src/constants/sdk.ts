@@ -1,7 +1,5 @@
 export const POWERPAY_SDK_NAME =
   "@powerchain-protocol/powerpay-checkout-sdk" as const;
-import { POWERPAY_SDK_VERSION } from "../version.js";
-export { POWERPAY_SDK_VERSION };
 export const POWERPAY_DEFAULT_TIMEOUT_MS = 15_000;
 export const POWERPAY_DEFAULT_PAGE_LIMIT = 25;
 export const POWERPAY_MAX_PAGE_LIMIT = 100;

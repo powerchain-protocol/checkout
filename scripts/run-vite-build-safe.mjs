@@ -18,11 +18,15 @@ if (!vite) {
 
 const result = spawnSync(
   process.execPath,
-  [vite, "build", "--config", resolve(appDirectory, "vite.config.ts")],
+  [vite, appDirectory, "build", "--config", resolve(appDirectory, "vite.config.ts")],
   {
-    cwd: appDirectory,
+    cwd: repositoryRoot,
     stdio: "inherit",
-    env: process.env,
+    env: {
+      ...process.env,
+      PWD: repositoryRoot,
+      INIT_CWD: repositoryRoot,
+    },
   },
 );
 

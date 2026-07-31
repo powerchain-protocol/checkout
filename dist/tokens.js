@@ -6,10 +6,11 @@ export function tokenProgramFor(standard) {
     return standard === "token-2022" ? TOKEN_2022_PROGRAM_ID : TOKEN_PROGRAM_ID;
 }
 export function associatedTokenAddress(owner, token) {
-    return PublicKey.findProgramAddressSync([owner.toBuffer(), tokenProgramFor(token.standard).toBuffer(), token.mint.toBuffer()], ASSOCIATED_TOKEN_PROGRAM_ID)[0];
+    return PublicKey.findProgramAddressSync([owner.toBytes(), tokenProgramFor(token.standard).toBytes(), token.mint.toBytes()], ASSOCIATED_TOKEN_PROGRAM_ID)[0];
 }
 export function tokenFromEnv(symbol, mintValue, decimals, standard) {
     if (!mintValue)
         return undefined;
     return { symbol, mint: new PublicKey(mintValue), decimals, standard };
 }
+//# sourceMappingURL=tokens.js.map

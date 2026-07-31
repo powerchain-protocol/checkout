@@ -30,3 +30,4 @@ export function createSolanaPayTransactionRequest(endpoint, label, message) {
         url.searchParams.set("message", message);
     return url;
 }
+//# sourceMappingURL=solana-pay.js.map

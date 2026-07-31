@@ -1,13 +1,18 @@
-import { fileURLToPath, URL } from "node:url";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
+const configFile = fileURLToPath(import.meta.url);
+const appRoot = dirname(configFile);
+const repositoryRoot = resolve(appRoot, "..");
+
 export default defineConfig(({ mode }) => {
-  const appRoot = fileURLToPath(new URL(".", import.meta.url));
   const env = loadEnv(mode, appRoot, "VITE_");
 
   return {
     root: appRoot,
+    cacheDir: resolve(repositoryRoot, "node_modules/.vite/powerpay-app"),
     plugins: [
       react(),
       {
@@ -23,16 +28,15 @@ export default defineConfig(({ mode }) => {
     ],
     resolve: {
       alias: {
-        "@powerpay/sdk": fileURLToPath(
-          new URL("../src/index.ts", import.meta.url),
-        ),
-        "@app": fileURLToPath(new URL("./src", import.meta.url)),
-        "@app-lib": fileURLToPath(new URL("./lib", import.meta.url)),
+        "@powerpay/sdk": resolve(repositoryRoot, "src/index.ts"),
+        "@app": resolve(appRoot, "src"),
+        "@app-lib": resolve(appRoot, "lib"),
       },
       dedupe: ["react", "react-dom"],
     },
     envPrefix: ["VITE_"],
     optimizeDeps: {
+      entries: [resolve(appRoot, "index.html")],
       include: [
         "react",
         "react-dom",
@@ -45,7 +49,7 @@ export default defineConfig(({ mode }) => {
       target: "es2022",
       sourcemap: mode !== "production",
       manifest: true,
-      outDir: "dist",
+      outDir: resolve(appRoot, "dist"),
       emptyOutDir: true,
     },
     server: {
@@ -53,6 +57,12 @@ export default defineConfig(({ mode }) => {
       strictPort: true,
       host: true,
       allowedHosts: true,
+      watch: {
+        ignored: [
+          resolve(appRoot, "dist/**"),
+          resolve(repositoryRoot, "reports/**"),
+        ],
+      },
       cors: {
         origin: true,
         methods: [
@@ -75,7 +85,7 @@ export default defineConfig(({ mode }) => {
         "Cross-Origin-Resource-Policy": "cross-origin",
       },
       fs: {
-        allow: [".."],
+        allow: [repositoryRoot],
       },
     },
     preview: {

@@ -20,15 +20,20 @@ const result = spawnSync(
   process.execPath,
   [
     vite,
+    appDirectory,
     "preview",
     "--config",
     resolve(appDirectory, "vite.config.ts"),
     ...process.argv.slice(2),
   ],
   {
-    cwd: appDirectory,
+    cwd: repositoryRoot,
     stdio: "inherit",
-    env: process.env,
+    env: {
+      ...process.env,
+      PWD: repositoryRoot,
+      INIT_CWD: repositoryRoot,
+    },
   },
 );
 

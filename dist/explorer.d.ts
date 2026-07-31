@@ -9,3 +9,4 @@ export declare function explorerUrl(args: {
 }): string;
 export declare const transactionExplorerUrl: (signature: string, cluster?: SolanaCluster) => string;
 export declare const addressExplorerUrl: (address: string, cluster?: SolanaCluster) => string;
+//# sourceMappingURL=explorer.d.ts.map

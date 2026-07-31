@@ -25,3 +25,4 @@ const iconStyle = { width: 58, height: 58, margin: "0 auto 18px", borderRadius: 
 const muted = { margin: "0 0 18px", color: "#94a3b8", overflowWrap: "anywhere" };
 const link = { display: "block", marginBottom: 20, color: "#a7f3d0", fontWeight: 700, textDecoration: "none" };
 const primary = { width: "100%", minHeight: 50, border: 0, borderRadius: 14, color: "#06261a", background: "#34d399", fontWeight: 800, cursor: "pointer" };
+//# sourceMappingURL=ConfirmationPopupCard.js.map

@@ -33,3 +33,4 @@ export function runtimeConfig(env = {}) {
         },
     };
 }
+//# sourceMappingURL=config.js.map

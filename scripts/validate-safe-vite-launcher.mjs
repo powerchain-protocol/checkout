@@ -5,8 +5,8 @@ const rootPackage = JSON.parse(readFileSync("package.json", "utf8"));
 const appPackage = JSON.parse(readFileSync("app/package.json", "utf8"));
 
 for (const marker of [
-  "process.chdir(appDirectory)",
-  "cwd: appDirectory",
+  "process.chdir(repositoryRoot)",
+  "cwd: repositoryRoot",
   "node_modules",
   "\"vite\"",
   "\"bin\"",

@@ -9,3 +9,4 @@ export interface PowerPayTransferRequest {
     memo?: string;
 }
 export declare function encodePowerPayTransferRequest(request: PowerPayTransferRequest): URL;
+//# sourceMappingURL=solana-pay-sdk.d.ts.map

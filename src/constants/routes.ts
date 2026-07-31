@@ -24,6 +24,15 @@ export const POWERPAY_API_ROUTES = {
     `${POWERPAY_API_PREFIX}/integrations/${encodeURIComponent(integrationId)}`,
   trustedTokens: `${POWERPAY_API_PREFIX}/trusted-tokens`,
   crossBorder: `${POWERPAY_API_PREFIX}/cross-border`,
+  refunds: `${POWERPAY_API_PREFIX}/refunds`,
+  refund: (refundId: string) =>
+    `${POWERPAY_API_PREFIX}/refunds/${encodeURIComponent(refundId)}`,
+  webhooks: `${POWERPAY_API_PREFIX}/webhooks`,
+  webhook: (webhookId: string) =>
+    `${POWERPAY_API_PREFIX}/webhooks/${encodeURIComponent(webhookId)}`,
+  metrics: `${POWERPAY_API_PREFIX}/metrics`,
+  configuration: `${POWERPAY_API_PREFIX}/config`,
+  roles: `${POWERPAY_API_PREFIX}/roles`,
 } as const;
 
 export const POWERPAY_APP_ROUTES = {

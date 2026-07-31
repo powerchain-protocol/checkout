@@ -18,3 +18,4 @@ export class PayerClient {
         return signature;
     }
 }
+//# sourceMappingURL=client.js.map

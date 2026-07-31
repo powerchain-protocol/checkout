@@ -9,3 +9,4 @@ export declare class PayerClient {
     constructor(connection: Connection, wallet: PayerWallet);
     sendInstructions(instructions: TransactionInstruction[]): Promise<string>;
 }
+//# sourceMappingURL=client.d.ts.map

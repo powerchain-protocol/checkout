@@ -36,3 +36,4 @@ export async function updateFungibleTokenMetadata(umi, mint, updates) {
         },
     }).sendAndConfirm(umi);
 }
+//# sourceMappingURL=metaplex.js.map

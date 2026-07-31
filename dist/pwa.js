@@ -3,8 +3,10 @@ import { useEffect } from "react";
  * Installs PowerPay PWA metadata and registers /service-worker.js.
  * Render once near the root of a React application.
  */
-export function PowerPayPwa({ manifestHref = "/manifest.webmanifest", themeColor = "#063022", }) {
+export function PowerPayPwa({ manifestHref = "/manifest.webmanifest", themeColor = "#063022", enabled = true, }) {
     useEffect(() => {
+        if (!enabled)
+            return;
         const upsertLink = (rel, href, sizes) => {
             let link = document.head.querySelector(`link[rel="${rel}"]${sizes ? `[sizes="${sizes}"]` : ""}`);
             if (!link) {
@@ -32,7 +34,8 @@ export function PowerPayPwa({ manifestHref = "/manifest.webmanifest", themeColor
                 // Apps may run the SDK without serving a service worker.
             });
         }
-    }, [manifestHref, themeColor]);
+    }, [enabled, manifestHref, themeColor]);
     return null;
 }
 export default PowerPayPwa;
+//# sourceMappingURL=pwa.js.map

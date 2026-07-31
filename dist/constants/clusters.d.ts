@@ -10,3 +10,4 @@ export interface ClusterDefinition {
 export declare const DEFAULT_CLUSTER: PowerPayCluster;
 export declare const CLUSTERS: Record<PowerPayCluster, ClusterDefinition>;
 export declare function isPowerPayCluster(value: string): value is PowerPayCluster;
+//# sourceMappingURL=clusters.d.ts.map

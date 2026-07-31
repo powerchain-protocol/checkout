@@ -29,3 +29,4 @@ export function WalletConnectModal({ open, onOpenChange, }) {
                             onOpenChange(false);
                         }, children: [adapter.icon ? (_jsx("img", { src: adapter.icon, alt: "", width: "34", height: "34" })) : (_jsx("span", { className: "pp-wallet-fallback", children: adapter.name.slice(0, 1) })), _jsxs("span", { children: [_jsx("strong", { children: adapter.name }), _jsx("small", { children: adapter.readyState })] }), _jsx("span", { "aria-hidden": "true", children: "\u2192" })] }, adapter.name))) }), _jsx("p", { className: "pp-modal-note", children: "PowerPay never receives your seed phrase or private keys." })] }) }));
 }
+//# sourceMappingURL=wallet-connect-modal.js.map

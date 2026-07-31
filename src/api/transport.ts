@@ -7,9 +7,9 @@ import {
   POWERPAY_DEFAULT_TIMEOUT_MS,
   POWERPAY_IDEMPOTENCY_HEADER,
   POWERPAY_REQUEST_ID_HEADER,
-  POWERPAY_SDK_VERSION,
   POWERPAY_VERSION_HEADER,
 } from "../constants/sdk.js";
+import { POWERPAY_SDK_VERSION } from "../version.js";
 import type {
   PowerPayRequestContext,
   PowerPaySdkConfig,

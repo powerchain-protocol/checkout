@@ -32,3 +32,4 @@ export class CctpAttestationClient {
         return response.json();
     }
 }
+//# sourceMappingURL=cctp.js.map

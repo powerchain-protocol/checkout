@@ -52,3 +52,4 @@ export interface CheckoutResult {
     error?: string;
     confirmedAt?: Date;
 }
+//# sourceMappingURL=checkout.d.ts.map

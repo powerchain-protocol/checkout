@@ -41,7 +41,7 @@ export function TestAreaPage() {
           <p>Exercise UI states and local encoding without submitting a transaction.</p>
         </div>
         <div className="web3-icon-row">
-          <NetworkIcon network="solana" size={34} variant="branded" />
+          <NetworkIcon name="solana" size={34} variant="branded" />
           <TokenIcon symbol="SOL" size={34} variant="branded" />
           <TokenIcon symbol="USDC" size={34} variant="branded" />
         </div>

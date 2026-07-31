@@ -12,3 +12,4 @@ export const POWERPAY_BRAND_ASSETS = {
     metadata: "/metadata.json",
     manifest: "/manifest.webmanifest",
 };
+//# sourceMappingURL=brand-assets.js.map

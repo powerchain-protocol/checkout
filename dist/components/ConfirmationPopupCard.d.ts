@@ -1,3 +1,4 @@
+import React from "react";
 import { type SolanaCluster } from "../explorer.js";
 export interface ConfirmationPopupCardProps {
     open: boolean;
@@ -9,4 +10,5 @@ export interface ConfirmationPopupCardProps {
     reference?: string;
     onClose: () => void;
 }
-export declare function ConfirmationPopupCard({ open, status, amount, asset, signature, cluster, reference, onClose }: ConfirmationPopupCardProps): any;
+export declare function ConfirmationPopupCard({ open, status, amount, asset, signature, cluster, reference, onClose }: ConfirmationPopupCardProps): React.JSX.Element | null;
+//# sourceMappingURL=ConfirmationPopupCard.d.ts.map

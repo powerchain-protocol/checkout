@@ -253,3 +253,103 @@ export class IntegrationsResourceClient {
     );
   }
 }
+
+
+export interface CreateRefundRequest {
+  paymentId: string;
+  amount: string;
+  currency?: string;
+  reason?: string;
+}
+
+export interface CreateWebhookRequest {
+  url: string;
+  events?: string[];
+}
+
+export class RefundsResourceClient {
+  constructor(private readonly transport: PowerPayHttpTransport) {}
+
+  list(context?: PowerPayRequestContext): Promise<PowerPayPage<Record<string, unknown>>> {
+    return this.transport.request(
+      { method: "GET", url: POWERPAY_API_ROUTES.refunds },
+      context,
+    );
+  }
+
+  create(
+    request: CreateRefundRequest,
+    context?: PowerPayRequestContext,
+  ): Promise<Record<string, unknown>> {
+    return this.transport.request(
+      { method: "POST", url: POWERPAY_API_ROUTES.refunds, data: request },
+      context,
+    );
+  }
+
+  retrieve(
+    refundId: string,
+    context?: PowerPayRequestContext,
+  ): Promise<Record<string, unknown>> {
+    return this.transport.request(
+      { method: "GET", url: POWERPAY_API_ROUTES.refund(refundId) },
+      context,
+    );
+  }
+}
+
+export class WebhooksResourceClient {
+  constructor(private readonly transport: PowerPayHttpTransport) {}
+
+  list(context?: PowerPayRequestContext): Promise<PowerPayPage<Record<string, unknown>>> {
+    return this.transport.request(
+      { method: "GET", url: POWERPAY_API_ROUTES.webhooks },
+      context,
+    );
+  }
+
+  create(
+    request: CreateWebhookRequest,
+    context?: PowerPayRequestContext,
+  ): Promise<Record<string, unknown>> {
+    return this.transport.request(
+      { method: "POST", url: POWERPAY_API_ROUTES.webhooks, data: request },
+      context,
+    );
+  }
+
+  remove(
+    webhookId: string,
+    context?: PowerPayRequestContext,
+  ): Promise<{ id: string; deleted: boolean }> {
+    return this.transport.request(
+      { method: "DELETE", url: POWERPAY_API_ROUTES.webhook(webhookId) },
+      context,
+    );
+  }
+}
+
+export class SystemResourceClient {
+  constructor(private readonly transport: PowerPayHttpTransport) {}
+
+  metrics(context?: PowerPayRequestContext): Promise<Record<string, unknown>> {
+    return this.transport.request(
+      { method: "GET", url: POWERPAY_API_ROUTES.metrics },
+      context,
+    );
+  }
+
+  configuration(context?: PowerPayRequestContext): Promise<Record<string, unknown>> {
+    return this.transport.request(
+      { method: "GET", url: POWERPAY_API_ROUTES.configuration },
+      context,
+    );
+  }
+
+  roles(context?: PowerPayRequestContext): Promise<Record<string, unknown>> {
+    return this.transport.request(
+      { method: "GET", url: POWERPAY_API_ROUTES.roles },
+      context,
+    );
+  }
+}
