@@ -1,5 +1,5 @@
 declare module "@solana/web3.js" {
- export class PublicKey { constructor(value:any); static findProgramAddressSync(seeds:any[], programId:PublicKey):[PublicKey,number]; toBuffer():Buffer; toBase58():string; equals(other:PublicKey):boolean; }
+ export class PublicKey { constructor(value:any); static findProgramAddressSync(seeds:any[], programId:PublicKey):[PublicKey,number]; toBuffer():Uint8Array; toBase58():string; equals(other:PublicKey):boolean; }
  export type Commitment = "processed" | "confirmed" | "finalized";
  export interface ConnectionConfig { commitment?:Commitment; wsEndpoint?:string; confirmTransactionInitialTimeout?:number; }
  export class Connection {
@@ -12,7 +12,7 @@ declare module "@solana/web3.js" {
    sendRawTransaction(data:any,options?:any):Promise<string>;
    confirmTransaction(signature:any,commitment?:Commitment):Promise<any>;
  }
- export class TransactionInstruction { constructor(args:any); data:Buffer; keys:any[]; programId:PublicKey; }
+ export class TransactionInstruction { constructor(args:any); data:Uint8Array; keys:any[]; programId:PublicKey; }
  export class Transaction {
    feePayer?:PublicKey; recentBlockhash?:string;
    add(...instructions:TransactionInstruction[]):this;
@@ -24,25 +24,10 @@ declare module "@solana/web3.js" {
  export function clusterApiUrl(cluster:"devnet"|"testnet"|"mainnet-beta"):string;
 }
 declare module "@solana/spl-token" { export const TOKEN_2022_PROGRAM_ID:any; }
-declare module "react" {
-  const React:any;
-  export default React;
-  export function useEffect(fn:any,deps?:any[]):void;
-  export function useState<T>(initial:T|(()=>T)):[T,(value:T|((current:T)=>T))=>void];
-  export function useMemo<T>(factory:()=>T,deps:any[]):T;
-  export function useCallback<T extends (...args:any[])=>any>(fn:T,deps:any[]):T;
-  export function createContext<T>(value:T):any;
-  export function useContext<T>(context:any):T;
-  export type ReactNode=any;
-  export type MouseEvent<T=any>={target:any;currentTarget:T};
-  export type ChangeEvent<T=any>={target:T};
 }
-declare module "react/jsx-runtime" { export const jsx:any; export const jsxs:any; export const Fragment:any; }
-declare namespace JSX { interface IntrinsicElements { [elemName:string]:any } }
-declare const Buffer: any;
-type Buffer = any;
-interface ImportMeta { env?: Record<string,string|undefined>; }
-declare namespace React { type CSSProperties = Record<string,string|number|undefined>; type MouseEventHandler<T=any>=(event:any)=>void; type KeyboardEventHandler<T=any>=(event:any)=>void; type ReactNode=any; type MouseEvent<T=any>={target:any;currentTarget:T}; type ChangeEvent<T=any>={target:T}; }
+interface ImportMetaEnv { readonly [key: string]: string | boolean | undefined; }
+interface ImportMeta { readonly env: ImportMetaEnv; }
+; type ChangeEvent<T=any>={target:T}; }
 
 declare module "@solana/pay" {
   import { PublicKey } from "@solana/web3.js";

@@ -63,7 +63,20 @@ export * from "./merchant/payment-client.js";
 
 export * from "./version.js";
 export * from "./config/index.js";
-export * from "./utils/index.js";
+export {
+  invariant,
+  sleep,
+  clamp,
+  shortenAddress,
+  createRequestId,
+  isRecord,
+  asPublicKey,
+  requiredString,
+  unixTimestamp,
+  futureIso,
+  createId,
+  uuid,
+} from "./utils/index.js";
 export * from "./lib/index.js";
 export * from "./types/api.js";
 export * from "./types/common.js";
@@ -114,3 +127,12 @@ export * from "./context/network-context.js";
 export * from "./solana/finality.js";
 
 export * from "./lib/api.js";
+
+export * from "./api/index.js";
+export * from "./types/sdk.js";
+export * from "./types/resources.js";
+export * from "./context/sdk-context.js";
+export * from "./context/checkout-context.js";
+export * from "./integrations/index.js";
+
+export * from "./programs/index.js";

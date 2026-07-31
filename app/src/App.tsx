@@ -4,9 +4,11 @@ import {
 } from "@powerpay/sdk";
 import { AppHeader } from "./components/layout/AppHeader";
 import { Sidebar } from "./components/layout/Sidebar";
+import { StartupScreen } from "./components/system/StartupScreen";
 import { ToastRegion } from "./components/system/ToastRegion";
 import { WalletRuntime } from "./components/system/WalletRuntime";
 import { ErrorBoundary } from "./components/ui/error-boundary";
+import { useAppStartup } from "./hooks/use-app-startup";
 import { useHashRoute } from "./hooks/use-hash-route";
 import { AlarmsPage } from "./pages/alarms";
 import { CheckoutPage } from "./pages/checkout";
@@ -20,10 +22,10 @@ import "./styles/app.css";
 import "../../src/styles/powerpay.css";
 
 function RouteContent() {
-  const route = useHashRoute();
+  const { route } = useHashRoute();
 
   return (
-    <div className="pp-ui app-shell">
+    <div className="pp-ui app-shell app-shell--entered">
       <AppHeader />
       <Sidebar activeRoute={route} />
       {route === "overview" && <OverviewPage />}
@@ -39,6 +41,12 @@ function RouteContent() {
 }
 
 export function App() {
+  const { phase, complete } = useAppStartup();
+
+  if (!complete) {
+    return <StartupScreen phase={phase} />;
+  }
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">

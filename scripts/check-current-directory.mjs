@@ -1,29 +1,31 @@
-import { existsSync } from "node:fs";
+import { existsSync, realpathSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-let cwd;
+const scriptDirectory = dirname(fileURLToPath(import.meta.url));
+const repositoryRoot = realpathSync(resolve(scriptDirectory, ".."));
+
+let currentDirectory;
 try {
-  cwd = process.cwd();
-} catch (error) {
+  currentDirectory = realpathSync(process.cwd());
+} catch {
   console.error(
-    [
-      "",
-      "The shell's current working directory no longer exists.",
-      "This causes npm to fail with ENOENT/uv_cwd before reading package.json.",
-      "",
-      "Fix:",
-      "  cd /workspaces/powerpay",
-      "  npm install",
-      "",
-      "Open a new terminal if the directory was deleted or renamed.",
-      "",
-    ].join("\n"),
+    "The terminal working directory no longer exists. Run:\n" +
+    `  ${resolve(repositoryRoot, "scripts/recover-cwd.sh")} npm run dev`,
   );
   process.exit(1);
 }
 
-if (!existsSync(cwd)) {
-  console.error(`Current directory does not exist: ${cwd}`);
-  process.exit(1);
+if (!existsSync(resolve(repositoryRoot, "package.json"))) {
+  throw new Error(`Invalid repository root: ${repositoryRoot}`);
 }
 
-console.log(`Working directory: ${cwd}`);
+if (
+  currentDirectory !== repositoryRoot &&
+  !currentDirectory.startsWith(`${repositoryRoot}/`)
+) {
+  console.warn(`Current directory is outside the repository: ${currentDirectory}`);
+}
+
+console.log(`Repository root: ${repositoryRoot}`);
+console.log(`Current directory: ${currentDirectory}`);

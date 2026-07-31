@@ -1,0 +1,198 @@
+.pp-button {
+  min-height: var(--pp-control-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 17px;
+  border: 1px solid transparent;
+  border-radius: var(--pp-radius-md);
+  font-weight: 720;
+  line-height: 1;
+  letter-spacing: -.01em;
+  cursor: pointer;
+  transition:
+    transform var(--pp-transition),
+    background var(--pp-transition),
+    border-color var(--pp-transition),
+    box-shadow var(--pp-transition),
+    color var(--pp-transition);
+}
+
+.pp-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.pp-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.pp-button:disabled {
+  opacity: .52;
+  cursor: not-allowed;
+}
+
+.pp-button--primary {
+  background: var(--pp-green-800);
+  color: white;
+  box-shadow: 0 10px 24px rgba(11, 67, 50, .18);
+}
+
+.pp-button--primary:hover:not(:disabled) {
+  background: var(--pp-green-700);
+  box-shadow: 0 13px 30px rgba(11, 67, 50, .23);
+}
+
+.pp-button--secondary {
+  border-color: var(--pp-border);
+  background: var(--pp-surface);
+  color: var(--pp-text);
+  box-shadow: var(--pp-shadow-xs);
+}
+
+.pp-button--secondary:hover:not(:disabled) {
+  border-color: var(--pp-border-strong);
+  background: var(--pp-surface-2);
+}
+
+.pp-button--ghost {
+  background: transparent;
+  color: var(--pp-muted);
+}
+
+.pp-button--ghost:hover:not(:disabled) {
+  background: var(--pp-surface-2);
+  color: var(--pp-text);
+}
+
+.pp-button--danger {
+  background: var(--pp-danger);
+  color: white;
+}
+
+.pp-button--sm {
+  min-height: 36px;
+  padding-inline: 13px;
+  border-radius: var(--pp-radius-sm);
+  font-size: .82rem;
+}
+
+.pp-button--lg {
+  min-height: 52px;
+  padding-inline: 22px;
+  font-size: .98rem;
+}
+
+.pp-button--icon {
+  width: var(--pp-control-height);
+  padding: 0;
+}
+
+.pp-button--full {
+  width: 100%;
+}
+
+.pp-button__icon {
+  display: inline-grid;
+  place-items: center;
+}
+
+.pp-button__icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.pp-button__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: pp-button-spin .7s linear infinite;
+}
+
+@keyframes pp-button-spin {
+  to { transform: rotate(360deg); }
+}
+
+.pp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 26px;
+  padding: 4px 9px;
+  border: 1px solid var(--pp-border);
+  border-radius: 999px;
+  background: var(--pp-surface-2);
+  color: var(--pp-muted);
+  font-size: .72rem;
+  font-weight: 720;
+  line-height: 1;
+}
+
+.pp-badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+.pp-badge--success {
+  border-color: color-mix(in srgb, var(--pp-success) 25%, transparent);
+  background: color-mix(in srgb, var(--pp-success) 10%, var(--pp-surface));
+  color: var(--pp-success);
+}
+
+.pp-badge--warning {
+  border-color: color-mix(in srgb, var(--pp-warning) 25%, transparent);
+  background: color-mix(in srgb, var(--pp-warning) 10%, var(--pp-surface));
+  color: var(--pp-warning);
+}
+
+.pp-badge--danger {
+  border-color: color-mix(in srgb, var(--pp-danger) 25%, transparent);
+  background: color-mix(in srgb, var(--pp-danger) 10%, var(--pp-surface));
+  color: var(--pp-danger);
+}
+
+.pp-badge--info {
+  border-color: color-mix(in srgb, var(--pp-info) 25%, transparent);
+  background: color-mix(in srgb, var(--pp-info) 10%, var(--pp-surface));
+  color: var(--pp-info);
+}
+
+.pp-empty-state {
+  min-height: 280px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  padding: 38px;
+  border: 1px dashed var(--pp-border-strong);
+  border-radius: var(--pp-radius-xl);
+  background:
+    radial-gradient(circle at 50% 0, rgba(20, 132, 88, .08), transparent 50%),
+    var(--pp-surface);
+  text-align: center;
+}
+
+.pp-empty-state__icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  background: var(--pp-surface-2);
+  color: var(--pp-green-600);
+}
+
+.pp-empty-state h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: -.025em;
+}
+
+.pp-empty-state > p:not(.eyebrow) {
+  max-width: 470px;
+  margin: 9px 0 20px;
+  color: var(--pp-muted);
+  line-height: 1.65;
+}

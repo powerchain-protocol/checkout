@@ -30,7 +30,11 @@
         "./lib/*"
       ]
     },
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "types": [
+      "vite/client",
+      "node"
+    ]
   },
   "include": [
     "src",

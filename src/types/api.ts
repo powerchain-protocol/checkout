@@ -80,3 +80,59 @@ export interface CorsResponse {
   credentials: boolean;
   maxAgeSeconds: number;
 }
+
+
+export interface ApiMeta {
+  requestId: string;
+  version: string;
+  timestamp: string;
+}
+
+export interface ApiSuccessBody<T> {
+  data: T;
+  meta: ApiMeta;
+}
+
+export interface ApiFallbackBody {
+  error: {
+    code: string;
+    message: string;
+    details?: unknown;
+    requestId: string;
+    retryable?: boolean;
+  };
+  meta?: ApiMeta;
+}
+
+export type PowerPayEventType =
+  | "system.ready"
+  | "system.heartbeat"
+  | "payment.created"
+  | "payment.updated"
+  | "payment.confirmed"
+  | "payment.failed"
+  | "session.created"
+  | "session.updated"
+  | "session.completed"
+  | "integration.updated";
+
+export interface PowerPayEvent<T = unknown> {
+  id: string;
+  type: PowerPayEventType;
+  createdAt: string;
+  resourceId?: string;
+  merchantId?: string;
+  data: T;
+}
+
+export interface WebSocketInfoResponse {
+  endpoint: string;
+  protocol: "powerpay.v1";
+  heartbeatSeconds: number;
+  reconnect: {
+    initialDelayMs: number;
+    maximumDelayMs: number;
+    multiplier: number;
+  };
+  events: PowerPayEventType[];
+}

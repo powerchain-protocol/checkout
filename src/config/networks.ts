@@ -10,3 +10,11 @@ export type {
   SolanaCluster,
   SuiNetwork,
 } from "../clusters/types.js";
+
+
+import { SOLANA_CLUSTERS as SOLANA_NETWORKS } from "../clusters/solana.js";
+import type { SolanaCluster as SolanaNetworkId } from "../clusters/types.js";
+
+export function networkConfig(cluster: SolanaNetworkId) {
+  return SOLANA_NETWORKS[cluster];
+}

@@ -1,3 +1,4 @@
+import { dispatchExtendedRoute } from "./routes.js";
 import {
   apiError,
   optionsResponse,
@@ -9,17 +10,25 @@ import { createCrossBorderHandler } from "./cross-border.js";
 import { healthHandler } from "./health.js";
 import { createPaymentHandler } from "./payments.js";
 import { sessionHandler, sessionsHandler } from "./sessions.js";
+import {
+  apiIndexHandler,
+  openApiHandler,
+  websocketInfoHandler,
+} from "./system.js";
 import { trustedTokensHandler } from "./trusted-tokens.js";
 
 export const API_V1_PREFIX = "/api/v1";
 
 type Route = {
   pattern: RegExp;
-  handler: (request: ApiRequest) => Promise<ApiResponse>;
+  handler: (request: ApiRequest) => Promise<ApiResponse> | ApiResponse;
   params?: string[];
 };
 
 const routes: Route[] = [
+  { pattern: /^\/?$/, handler: apiIndexHandler },
+  { pattern: /^\/openapi\/?$/, handler: openApiHandler },
+  { pattern: /^\/websocket\/?$/, handler: websocketInfoHandler },
   { pattern: /^\/health\/?$/, handler: healthHandler },
   { pattern: /^\/payments\/?$/, handler: createPaymentHandler },
   { pattern: /^\/sessions\/?$/, handler: sessionsHandler },
@@ -45,28 +54,61 @@ function normalizePath(path: string): string {
 export async function routeApiV1(
   request: ApiRequest,
 ): Promise<ApiResponse> {
-  const path = normalizePath(request.path ?? "/");
+  const normalizedRequest = {
+    ...request,
+    method: request.method.toUpperCase(),
+  };
+  const path = normalizePath(normalizedRequest.path ?? "/");
 
-  if (request.method === "OPTIONS") {
-    return optionsResponse(request);
+  if (normalizedRequest.method === "OPTIONS") {
+    return optionsResponse(normalizedRequest);
   }
 
-  for (const route of routes) {
-    const match = route.pattern.exec(path);
-    if (!match) continue;
-
-    const params = { ...request.params };
-    route.params?.forEach((name, index) => {
-      params[name] = decodeURIComponent(match[index + 1]);
+  try {
+    const extended = dispatchExtendedRoute({
+      ...normalizedRequest,
+      path: `${API_V1_PREFIX}${path === "/" ? "" : path}`,
     });
-    return route.handler({ ...request, path, params });
-  }
+    if (extended) return extended;
 
-  return apiError(
-    404,
-    "ROUTE_NOT_FOUND",
-    "The requested API v1 route does not exist",
-    { path: request.path ?? "/" },
-    request,
-  );
+    for (const route of routes) {
+      const match = route.pattern.exec(path);
+      if (!match) continue;
+
+      const params = { ...normalizedRequest.params };
+      route.params?.forEach((name, index) => {
+        params[name] = decodeURIComponent(match[index + 1]);
+      });
+
+      return await route.handler({
+        ...normalizedRequest,
+        path,
+        params,
+      });
+    }
+
+    return apiError(
+      404,
+      "ROUTE_NOT_FOUND",
+      "The requested API v1 route does not exist",
+      {
+        path: normalizedRequest.path ?? "/",
+        documentation: "/api/v1/openapi",
+      },
+      normalizedRequest,
+      false,
+    );
+  } catch (cause) {
+    return apiError(
+      500,
+      "API_HANDLER_FAILED",
+      "The API handler failed unexpectedly",
+      {
+        path: normalizedRequest.path ?? "/",
+        cause: cause instanceof Error ? cause.message : String(cause),
+      },
+      normalizedRequest,
+      true,
+    );
+  }
 }

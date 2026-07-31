@@ -2,6 +2,8 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import "@solana/wallet-adapter-react-ui/styles.css";
+import "./styles/globals.css";
+import "./styles/components.css";
 import "./styles/app.css";
 
 function renderStartupFailure(error: unknown): void {
@@ -13,20 +15,39 @@ function renderStartupFailure(error: unknown): void {
 
   root.innerHTML = `
     <main class="boot-screen">
-      <section class="boot-card">
-        <p class="eyebrow">Application startup</p>
-        <h1>PowerPay could not start.</h1>
+      <section class="boot-content" role="alert">
+        <img
+          class="boot-logo"
+          src="/icons/powerpay-mark.svg"
+          alt=""
+          width="78"
+          height="78"
+        />
+        <div class="boot-wordmark" aria-label="PowerPay">
+          <span>Power</span><strong>Pay</strong>
+        </div>
+        <h1 style="margin-top:32px">PowerPay could not start</h1>
         <p>${message.replace(/[<>&"]/g, "")}</p>
-        <p style="margin-top: 16px">
+        <p>
           Check the browser console, then run
           <code>npm run dev:doctor</code>.
         </p>
         <button
           type="button"
-          style="margin-top:18px;padding:10px 14px"
+          style="
+            margin-top:20px;
+            border:0;
+            border-radius:12px;
+            padding:12px 18px;
+            background:#0b6b43;
+            color:white;
+            font:inherit;
+            font-weight:700;
+            cursor:pointer
+          "
           onclick="window.location.reload()"
         >
-          Reload
+          Reload PowerPay
         </button>
       </section>
     </main>

@@ -1,7 +1,15 @@
 import { rmSync } from "node:fs";
-import { resolve } from "node:path";
+import {
+  assertNotActiveDirectory,
+  assertRepositoryPath,
+  repositoryRoot,
+} from "./lib/safe-paths.mjs";
 
-for (const directory of ["dist", "app/dist", "coverage"]) {
-  rmSync(resolve(process.cwd(), directory), { recursive: true, force: true });
-  console.log(`Removed ${directory}`);
+const root = repositoryRoot(import.meta.url);
+
+for (const relativePath of ["dist", "app/dist", "coverage"]) {
+  const target = assertRepositoryPath(root, relativePath, "clean target");
+  assertNotActiveDirectory(target, root);
+  rmSync(target, { recursive: true, force: true });
+  console.log(`Removed ${relativePath}`);
 }

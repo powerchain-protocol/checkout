@@ -15,6 +15,7 @@ import {
 } from "@solana/web3.js";
 import { resolveMintInfo } from "./validation.js";
 import { parseUiAmount } from "./amounts.js";
+import { toFinality } from "./finality.js";
 
 export interface SolanaPayRequest {
   recipient: PublicKey;
@@ -84,6 +85,7 @@ export async function waitForSolanaPayPayment(params: {
   timeoutMs?: number;
 }): Promise<ConfirmedSignatureInfo> {
   const commitment = params.commitment ?? "confirmed";
+  const finality = toFinality(commitment);
   const started = Date.now();
   const amount = new BigNumber(String(params.amount));
 
@@ -92,7 +94,7 @@ export async function waitForSolanaPayPayment(params: {
       const signatureInfo = await findReference(
         params.connection,
         params.reference,
-        { finality: commitment },
+        { finality },
       );
 
       await validateTransfer(
@@ -104,7 +106,7 @@ export async function waitForSolanaPayPayment(params: {
           splToken: params.splToken,
           reference: params.reference,
         },
-        { commitment },
+        { commitment: finality },
       );
 
       return signatureInfo;

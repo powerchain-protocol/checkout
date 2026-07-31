@@ -33,6 +33,13 @@
 
 ### Added
 
+- Added a multi-stage Docker production image.
+- Added a Vite development Docker image.
+- Added Docker Compose production and development services.
+- Added Nginx SPA routing and `/healthz`.
+- Added Docker validation and npm commands.
+
+
 - Normalized `/api/v1` application router.
 - `/api/v1/sessions` create and read endpoints.
 - `/api/v1/cors` policy endpoint and global OPTIONS handling.
@@ -324,3 +331,19 @@ The format follows Keep a Changelog, and versions follow Semantic Versioning.
 
 
 
+
+
+### Documentation
+
+- Rebuilt the professional root and application READMEs.
+- Added architecture, onboarding, Docker, UI, and release guidance.
+- Added a formal forest-green design system.
+
+
+### Security and workspace organization
+
+- Added strict npm install-script governance through `package.json#allowScripts`.
+- Approved only Vite, Prisma, Prisma engines, and protobuf runtime generation.
+- Explicitly denied optional native accelerators and maintainer-only prepare hooks.
+- Added a shared configuration workspace and source-boundary validation.
+- Documented root SDK, merchant app, shared package, and API ownership.

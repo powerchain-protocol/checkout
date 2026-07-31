@@ -1,207 +1,290 @@
-# PowerPay Professional App
+<div align="center">
 
-The PowerPay app is the React reference interface for **PowerPay
-1.0.0-beta.1**. It demonstrates wallet connectivity, merchant dashboards,
-checkout previews, operational alarms, information screens, test utilities,
-Web3 icons, loading and error states, and integration with the root SDK.
+<img src="public/icons/powerpay-mark.svg" alt="PowerPay" width="76" />
 
-## Run
+# PowerPay Merchant Application
+
+### A professional checkout, QR payment, and PowerPOS workspace
+
+React · TypeScript · Vite · Radix UI · PowerPay SDK
+
+**Version `1.0.0-beta.1`**
+
+</div>
+
+---
+
+## Product overview
+
+The PowerPay Merchant Application is the reference interface for the PowerPay
+Checkout SDK. It is designed for merchant operators, finance teams, checkout
+developers, and in-person payment staff.
+
+The application provides a responsive forest-green interface with coordinated
+light and dark themes. It emphasizes payment confidence, client context,
+transaction clarity, and fast merchant workflows.
+
+## Main experiences
+
+### Merchant dashboard
+
+The dashboard presents operational metrics, transaction history, quick
+actions, merchant status, wallet balances, and network information in a
+high-density but readable layout.
+
+### Checkout workspace
+
+The checkout workspace combines:
+
+- client selection and search;
+- payment-method selection;
+- amount and memo entry;
+- merchant and recipient verification;
+- network fee and settlement review;
+- secure payment confirmation;
+- automatic receipt messaging.
+
+### Client QR payments
+
+Create client-specific QR requests with:
+
+- editable amounts;
+- configurable settlement assets;
+- payment memos;
+- copyable checkout links;
+- downloadable QR codes;
+- merchant branding and client identity.
+
+### PowerPOS
+
+PowerPOS supports in-person merchant workflows with:
+
+- touch-friendly amount entry;
+- customer selection;
+- QR wallet payments;
+- NFC-ready interaction patterns;
+- shareable payment links;
+- automatic email and on-chain receipts;
+- instant settlement status.
+
+## Visual system
+
+The interface uses a merchant-focused design system:
+
+| Token | Direction |
+|---|---|
+| Primary | Forest green |
+| Background | Warm white or deep green-black |
+| Typography | Inter |
+| Surfaces | Low-contrast bordered panels |
+| Radius | 11–18 px depending on hierarchy |
+| Shadows | Soft, restrained, operational |
+| Status | Green success, amber pending, red danger |
+| Density | Compact dashboard, generous checkout forms |
+
+The light and dark themes preserve the same hierarchy and payment semantics.
+
+## Run locally
 
 From the repository root:
 
 ```bash
-npm run env:init
 npm install
-npm --prefix app install
-npm run app:dev
+npm run dev
 ```
 
-Production checks:
+Or from the application workspace:
 
 ```bash
-npm run app:typecheck
+npm run dev --workspace @powerchain-protocol/powerpay-demo-app
+```
+
+Open `http://localhost:5173`.
+
+## Startup diagnostics
+
+Run:
+
+```bash
+npm run dev:doctor
+```
+
+Clear stale Vite state:
+
+```bash
+npm run dev:reset
+```
+
+The application includes a visible startup screen and top-level error recovery,
+so startup failures no longer produce an unexplained blank page.
+
+## Build
+
+```bash
 npm run app:build
 ```
 
-## Routes
+Production output is written to:
 
 ```text
-#overview
-#informations
-#alarms
-#testarea
+app/dist/
 ```
 
-Unknown routes display the not-found screen.
+## Docker
+
+Production:
+
+```bash
+npm run docker:up
+```
+
+Development with hot reload:
+
+```bash
+npm run docker:dev
+```
+
+Production application:
+
+```text
+http://localhost:8080
+```
+
+Development application:
+
+```text
+http://localhost:5173
+```
 
 ## Application structure
 
 ```text
-app/src/
-  components/
-    checkout/
-    dashboard/
-    layout/
-    system/
-    ui/
-  context/
-  data/
-  hooks/
-  lib/
-  pages/
-app/api/v1/
-  _shared.ts
-  health.ts
-  payments.ts
-  index.ts
-  swagger.yaml
+app/
+├── api/v1/                 API route handlers
+├── lib/                    Application API client and helpers
+├── public/                 Icons, manifest, and static assets
+├── src/
+│   ├── components/
+│   │   ├── checkout/       Checkout, QR, and PowerPOS components
+│   │   ├── dashboard/      Metrics and transaction components
+│   │   ├── layout/         Header, navigation, and sidebar
+│   │   ├── system/         Error, toast, and wallet runtime boundaries
+│   │   └── ui/             Reusable interface primitives
+│   ├── data/               Demo merchants, clients, assets, and metrics
+│   ├── hooks/              Navigation and application hooks
+│   ├── pages/              Product pages
+│   ├── styles/             Application design system
+│   ├── App.tsx             Application composition
+│   └── main.tsx            React startup and recovery
+├── index.html
+├── package.json
+└── vite.config.ts
 ```
 
-## Configuration
+## Checkout component map
 
-Browser-safe values are read from `.env.local` using `VITE_` names. Do not add
-Helius API keys, merchant signing keys, seed phrases, or other secrets to Vite
-variables.
+```text
+CheckoutPage
+├── Client directory
+├── MerchantCheckout
+│   └── PaymentForm
+├── ClientQrPayment
+├── PowerPos
+├── Order summary
+├── Merchant verification
+└── Transaction assurance
+```
+
+## Theme behavior
+
+The checkout workspace supports immediate light/dark switching. Forest-green
+tokens remain the primary brand color in both modes.
+
+Key CSS tokens include:
+
+```css
+--checkout-green: #0b6b43;
+--checkout-green-2: #0f8252;
+--checkout-green-soft: #e7f4ed;
+```
+
+Dark mode replaces backgrounds, surfaces, borders, and muted text while
+preserving the same semantic green accents.
+
+## Accessibility and UX
+
+The application includes:
+
+- semantic navigation and form controls;
+- visible keyboard focus;
+- readable contrast;
+- descriptive button labels;
+- responsive layout breakpoints;
+- explicit success, warning, loading, and error states;
+- safe read-only fallback when wallet providers fail;
+- production-only PWA registration;
+- secure-session and verified-merchant messaging.
+
+## Environment configuration
+
+Vite variables use the `VITE_` prefix:
 
 ```env
-VITE_POWERPAY_CLUSTER=devnet
-VITE_SOLANA_RPC_URL=https://api.devnet.solana.com
-VITE_PYTH_HERMES_URL=https://hermes.pyth.network
-VITE_USDC_MINT=
-VITE_POWERPAY_TOKEN_MINT=
-VITE_MERCHANT_TREASURY=
 VITE_POWERPAY_API_BASE_URL=http://localhost:3000
 ```
 
-## API integration
+Production CORS origins are configured at the server layer:
 
-```ts
-import { PowerPayApiClient } from "../../src/lib/api";
-
-const api = new PowerPayApiClient(
-  import.meta.env.VITE_POWERPAY_API_BASE_URL,
-);
-
-const payment = await api.createPayment({
-  merchant,
-  amount: "12.50",
-  currency: "USDC",
-  mint: usdcMint,
-  orderId: "PP-2048",
-});
+```env
+POWERPAY_CORS_ORIGINS=https://checkout.example.com
 ```
 
-The repository contains API handler logic and OpenAPI definitions, but the
-Vite application is not itself a server runtime. Deploy `app/api/v1` through a
-Node, serverless, or edge adapter.
+## UI validation
 
-## Design system
+Run:
 
-Reusable components include:
-
-```text
-components/ui/card.tsx
-components/ui/badge.tsx
-components/ui/error-boundary.tsx
+```bash
+npm run checkout:ui:validate
+npm run app:startup:validate
+npm run validate:app
 ```
 
-Radix Icons provide interface symbols. Web3 Icons provides network, token, and
-wallet imagery.
+These checks verify checkout modes, theme tokens, startup recovery, imports,
+and required UI components.
 
-## Deployment checklist
+## Adding a new payment experience
 
-1. Type-check and build the SDK and application.
-2. Set the intended Solana cluster explicitly.
-3. Configure production RPC and merchant addresses.
-4. Keep Helius and server API keys outside Vite variables.
-5. Replace demo data with persistent API resources.
-6. Add CSP, HTTPS, rate limiting, observability, and error reporting.
-7. Validate wallet, QR, and transaction confirmation flows on the target cluster.
-8. Complete security review before Mainnet Beta.
+1. Add the feature component under `src/components/checkout/`.
+2. Keep payment state local or expose it through an SDK hook.
+3. Add the mode to `CheckoutPage`.
+4. Use existing forest-green theme tokens.
+5. Add responsive styles.
+6. Update this README and `docs/CHECKOUT_UI_UX.md`.
+7. Add or extend a validator.
 
+## Product quality checklist
 
-## Checkout and invoice UI
+Before release, confirm:
 
-The app now includes:
+- the page renders in light and dark modes;
+- client selection remains visible and usable;
+- payment amounts are readable at all breakpoints;
+- transaction status is explicit;
+- error states do not collapse into blank screens;
+- no blue design tokens were introduced;
+- desktop and mobile layouts remain usable;
+- `1.0.0-beta.1` metadata remains synchronized.
 
-```text
-src/components/checkout/checkout.tsx
-src/components/checkout/cart.tsx
-src/components/checkout/payment-form.tsx
-src/components/checkout/invoice-preview.tsx
-src/pages/checkout.tsx
-```
+## Related documentation
 
-Open `#checkout` to view the responsive checkout experience.
-
-Development infrastructure is organized under:
-
-```text
-app/lib/
-  cache.ts
-  db.ts
-  embedded-wallet.ts
-  safe-actions.ts
-  utils.ts
-app/src/data/
-  data.ts
-  merchants.ts
-  metrics.ts
-  users.ts
-```
-
-The database and embedded-wallet implementations are development adapters.
-Replace them with encrypted, authenticated, persistent production services.
-
-## Cross-border page
-
-Open `#cross-border` to review the CCTP-oriented native USDC experience. The
-current page is a review surface; transaction construction remains behind the
-Circle integration service and trusted-token policy.
-
-## Deployment
-
-`vercel.json` builds the Vite application from `app/` and rewrites SPA routes
-to `index.html`. API functions require a deployment adapter under the
-platform's function directory or a separate backend service.
-
-## Sui network workspace
-
-Open `#sui` for the Sui account, balances, tokenized asset, and Cetus route
-interface. The displayed fixtures are UI examples until a Sui wallet adapter
-and production coin types are configured.
+- [Root project README](../README.md)
+- [Checkout UI and UX](../docs/CHECKOUT_UI_UX.md)
+- [Blank-screen recovery](../docs/APP_BLANK_SCREEN.md)
+- [Docker](../docs/DOCKER.md)
+- [CORS and Codespaces](../docs/CORS_AND_CODESPACES.md)
 
 
-## SDK alias and wallet CSS
+## API documentation
 
-Use the source alias for root SDK components:
-
-```ts
-import { ConnectButton, ThemeToggle } from "@powerpay/sdk";
-```
-
-Do not import `../../../src/index.js` from application components.
-
-Wallet Adapter styles are loaded once from `src/main.tsx`:
-
-```ts
-import "@solana/wallet-adapter-react-ui/styles.css";
-```
-
-
-## TypeScript path configuration
-
-The application uses `moduleResolution: "Bundler"` and a relative `paths`
-mapping for `@powerpay/sdk`. It does not use the deprecated `baseUrl` option.
-
-
-## Stable application aliases
-
-Use:
-
-```ts
-import { ConnectButton } from "@powerpay/sdk";
-import { formatCurrency } from "@app-lib/utils";
-```
-
-Avoid traversing from nested components to repository root files manually.
+The application serves Swagger UI at `/api-docs/` and the OpenAPI 3.1 document
+at `/swagger.yaml`. API discovery is available from `/api/v1`.

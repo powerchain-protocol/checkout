@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { shortenAddress } from "../validate.js";
+import { shortenPublicKey } from "../validate.js";
 import { WalletConnectModal } from "./wallet-connect-modal.js";
 
 export interface ConnectButtonProps {
@@ -20,7 +20,7 @@ export function ConnectButton({ className = "" }: ConnectButtonProps) {
         title="Disconnect wallet"
       >
         <span className="pp-status-dot" />
-        {shortenAddress(publicKey)}
+        {shortenPublicKey(publicKey)}
       </button>
     );
   }

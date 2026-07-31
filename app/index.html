@@ -7,40 +7,122 @@
       content="width=device-width, initial-scale=1"
     />
     <meta name="theme-color" content="#08291e" />
+    <meta
+      name="description"
+      content="PowerPay professional multi-chain merchant checkout"
+    />
     <link rel="icon" href="/icons/favicon.ico" />
+    <link rel="preload" href="/icons/powerpay-mark.svg" as="image" />
     <title>PowerPay — Merchant Checkout</title>
     <style>
-      html, body, #root { min-height: 100%; }
-      body {
-        margin: 0;
-        background: #f6f8f7;
-        color: #10231c;
-        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      :root {
+        color-scheme: light dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
+      html, body, #root { min-height: 100%; }
+      body { margin: 0; background: #f5faf7; }
       .boot-screen {
         min-height: 100vh;
         display: grid;
         place-items: center;
+        overflow: hidden;
+        position: relative;
+        color: #10231c;
+        background:
+          radial-gradient(circle at 50% 35%, rgba(16,185,108,.1), transparent 28%),
+          linear-gradient(180deg,#fbfdfc,#eef7f2);
+      }
+      .boot-screen::after {
+        content: "";
+        position: absolute;
+        width: 120%;
+        height: 240px;
+        left: -10%;
+        bottom: 5%;
+        opacity: .18;
+        background:
+          repeating-radial-gradient(
+            ellipse at center,
+            transparent 0 14px,
+            #0b6b43 15px 16px,
+            transparent 17px 27px
+          );
+        transform: perspective(460px) rotateX(64deg);
+        mask-image: linear-gradient(transparent, black, transparent);
+      }
+      .boot-content {
+        z-index: 1;
+        display: grid;
+        justify-items: center;
+        text-align: center;
         padding: 24px;
       }
-      .boot-card {
-        width: min(520px, 100%);
-        padding: 24px;
-        border: 1px solid #d8e1dd;
-        border-radius: 18px;
-        background: white;
-        box-shadow: 0 18px 50px rgba(9, 40, 29, .08);
+      .boot-logo { width: 78px; height: 78px; object-fit: contain; }
+      .boot-wordmark {
+        display: flex;
+        margin-top: 12px;
+        font-size: clamp(2rem,5vw,3rem);
+        line-height: 1;
+        letter-spacing: -.055em;
       }
-      .boot-card h1 { margin: 0 0 8px; }
-      .boot-card p { margin: 0; color: #5f7069; }
+      .boot-wordmark span { font-weight: 300; }
+      .boot-wordmark strong { color: #0b6b43; font-weight: 650; }
+      .boot-spinner {
+        width: 54px;
+        height: 54px;
+        margin: 32px 0 21px;
+        border: 4px solid rgba(11,107,67,.12);
+        border-top-color: #10b96c;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      .boot-content h1 {
+        margin: 0;
+        font-size: 1.45rem;
+        letter-spacing: -.03em;
+      }
+      .boot-content p {
+        max-width: 440px;
+        margin: 10px 0 0;
+        color: #60736b;
+        line-height: 1.6;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-color-scheme: dark) {
+        body { background: #020b08; }
+        .boot-screen {
+          color: #f3fbf7;
+          background:
+            radial-gradient(circle at 50% 35%, rgba(16,185,108,.13), transparent 28%),
+            linear-gradient(180deg,#06120e,#020b08);
+        }
+        .boot-content p { color: #9fb7ad; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .boot-spinner { animation: none; }
+      }
     </style>
   </head>
   <body>
     <div id="root">
-      <main class="boot-screen" id="powerpay-boot">
-        <section class="boot-card">
+      <main class="boot-screen" id="powerpay-boot" aria-busy="true">
+        <section class="boot-content">
+          <img
+            class="boot-logo"
+            src="/icons/powerpay-mark.svg"
+            alt=""
+            width="78"
+            height="78"
+          />
+          <div class="boot-wordmark" aria-label="PowerPay">
+            <span>Power</span><strong>Pay</strong>
+          </div>
+          <div class="boot-spinner" aria-hidden="true"></div>
           <h1>Starting PowerPay…</h1>
-          <p>The application is loading its interface and wallet providers.</p>
+          <p>
+            The application is loading its interface and wallet providers.
+          </p>
         </section>
       </main>
     </div>

@@ -1,4 +1,5 @@
 import type { ApiErrorBody } from "../../../src/types/api.js";
+import { POWERPAY_SDK_VERSION } from "../../../src/version.js";
 import { createRequestId } from "../../../src/utils/util.js";
 
 export interface ApiRequest {
@@ -107,11 +108,16 @@ export function json<T>(
   body: T,
   request?: ApiRequest,
 ): ApiResponse<T> {
+  const requestId = header(request ?? { method: "GET" }, "x-request-id")
+    ?? createRequestId("req");
+
   return {
     status,
     headers: {
       "content-type": "application/json; charset=utf-8",
       "cache-control": "no-store",
+      "x-request-id": requestId,
+      "x-powerpay-version": POWERPAY_SDK_VERSION,
       ...corsHeaders(request),
     },
     body,
@@ -124,7 +130,11 @@ export function apiError(
   message: string,
   details?: unknown,
   request?: ApiRequest,
+  retryable = status >= 500,
 ): ApiResponse<ApiErrorBody> {
+  const requestId = header(request ?? { method: "GET" }, "x-request-id")
+    ?? createRequestId("req");
+
   return json(
     status,
     {
@@ -132,10 +142,17 @@ export function apiError(
         code,
         message,
         details,
-        requestId: createRequestId("req"),
+        requestId,
+        retryable,
       },
     },
-    request,
+    {
+      ...(request ?? { method: "GET" }),
+      headers: {
+        ...(request?.headers ?? {}),
+        "x-request-id": requestId,
+      },
+    },
   );
 }
 
@@ -156,10 +173,9 @@ export function methodNotAllowed(
 
 export function optionsResponse(request: ApiRequest): ApiResponse<null | ApiErrorBody> {
   const origin = header(request, "origin");
-  const requestedMethod = header(
-    request,
-    "access-control-request-method",
-  )?.toUpperCase();
+  const requestedMethod =
+    header(request, "access-control-request-method")?.toUpperCase() ??
+    "POST";
   const requested = requestedHeaders(request);
 
   if (!origin || !selectedOrigin(origin)) {

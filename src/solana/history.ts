@@ -66,7 +66,7 @@ export async function assertConfirmedSignature(params: {
   if (status.value.err) {
     throw new Error(`Transaction failed: ${JSON.stringify(status.value.err)}`);
   }
-  const requested = finality;
+  const requested = toFinality(params.commitment);
   if (
     requested === "finalized" &&
     status.value.confirmationStatus !== "finalized"

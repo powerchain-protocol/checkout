@@ -6,3 +6,8 @@ export * from "./payments.js";
 export * from "./router.js";
 export * from "./sessions.js";
 export * from "./trusted-tokens.js";
+
+export * from "./clients.js";
+export * from "./checkout.js";
+export * from "./integrations.js";
+export * from "./routes.js";

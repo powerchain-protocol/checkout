@@ -1,0 +1,43 @@
+services:
+  powerpay-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: powerpay-checkout-sdk:1.0.0-beta.1
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -qO-
+        - http://127.0.0.1:8080/healthz
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  powerpay-dev:
+    profiles: ["dev"]
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: powerpay-checkout-sdk-dev:1.0.0-beta.1
+    working_dir: /workspace
+    command: npm run dev:host
+    ports:
+      - "5173:5173"
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - .:/workspace
+      - powerpay-root-node-modules:/workspace/node_modules
+      - powerpay-app-node-modules:/workspace/app/node_modules
+
+volumes:
+  powerpay-root-node-modules:
+  powerpay-app-node-modules:

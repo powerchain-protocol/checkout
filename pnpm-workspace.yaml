@@ -1,13 +1,9 @@
 packages:
   - "app"
+  - "packages/config"
   - "packages/sdk/powerpay/ui"
 
 allowBuilds:
-  "@stellar/stellar-sdk": true
-  bigint-buffer: true
-  blake-hash: true
-  bufferutil: true
+  "@prisma/engines": true
+  esbuild: true
   protobufjs: true
-  tiny-secp256k1: true
-  usb: true
-  utf-8-validate: true

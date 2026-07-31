@@ -1,7 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": [],
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ],
     "skipLibCheck": true,
     "declarationMap": false,
     "sourceMap": false

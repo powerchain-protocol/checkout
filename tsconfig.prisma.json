@@ -5,16 +5,18 @@
     "moduleResolution": "NodeNext",
     "strict": true,
     "noEmit": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "verbatimModuleSyntax": true,
     "skipLibCheck": true
   },
   "include": [
     "prisma.config.ts",
-    "database/**/*.ts"
+    "database/**/*.ts",
+    "database/generated/prisma/**/*.d.ts"
   ],
   "exclude": [
-    "database/generated/**",
     "node_modules",
     "dist"
   ]

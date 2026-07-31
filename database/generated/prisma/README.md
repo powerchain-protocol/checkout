@@ -1,10 +1,17 @@
-# Generated Prisma client
+# Prisma 7 generated client
 
-Run:
+Generate the real client with:
 
 ```bash
-pnpm db:generate
+npm run db:generate
 ```
 
-The committed `client.d.ts` is only an editor fallback. Prisma generation
-creates the runtime client used by `database/prisma.ts`.
+The committed `client.d.ts` is an editor fallback for a fresh checkout before
+generation. It declares the generated client surface locally and deliberately
+does not import or re-export `PrismaClient` or `Prisma` from `@prisma/client`.
+
+Database code imports from:
+
+```ts
+import { PrismaClient } from "./generated/prisma/client.js";
+```

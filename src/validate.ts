@@ -68,7 +68,7 @@ export function validateCheckoutRequest(
   return request;
 }
 
-export function shortenAddress(address: string | PublicKey, size = 4): string {
+export function shortenPublicKey(address: string | PublicKey, size = 4): string {
   const value = address.toString();
   return `${value.slice(0, size)}…${value.slice(-size)}`;
 }

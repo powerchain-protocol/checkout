@@ -1,29 +1,30 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
-export type BadgeVariant =
+export type BadgeTone =
   | "neutral"
   | "success"
   | "warning"
   | "danger"
-  | "info"
-  | "outline";
+  | "info";
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  children: ReactNode;
-  dot?: boolean;
-  variant?: BadgeVariant;
+  tone?: BadgeTone;
+  icon?: ReactNode;
 }
 
 export function Badge({
   children,
   className = "",
-  dot = false,
-  variant = "neutral",
+  tone = "neutral",
+  icon,
   ...props
 }: BadgeProps) {
   return (
-    <span className={`ui-badge ui-badge--${variant} ${className}`} {...props}>
-      {dot && <span className="ui-badge__dot" aria-hidden="true" />}
+    <span
+      className={`pp-badge pp-badge--${tone} ${className}`.trim()}
+      {...props}
+    >
+      {icon && <span aria-hidden="true">{icon}</span>}
       {children}
     </span>
   );

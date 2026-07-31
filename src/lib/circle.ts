@@ -6,7 +6,7 @@ import {
 } from "@solana/web3.js";
 import { concatBytes, u32LE, u64LE } from "../solana/bytes.js";
 
-export type CctpEnvironment = "testnet" | "mainnet";
+export type CircleCctpEnvironment = "testnet" | "mainnet";
 
 export const CCTP_SOLANA = {
   testnet: {
@@ -19,7 +19,7 @@ export const CCTP_SOLANA = {
 } as const;
 
 export interface CircleCctpClientOptions {
-  environment?: CctpEnvironment;
+  environment?: CircleCctpEnvironment;
   irisBaseUrl?: string;
 }
 
@@ -30,7 +30,7 @@ export interface CctpAttestationResponse {
 }
 
 export class CircleCctpClient {
-  readonly environment: CctpEnvironment;
+  readonly environment: CircleCctpEnvironment;
   readonly iris: AxiosInstance;
 
   constructor(options: CircleCctpClientOptions = {}) {

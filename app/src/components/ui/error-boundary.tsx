@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { ExclamationTriangleIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Card, CardContent } from "./card";
+import { Button } from "./button";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -53,17 +54,8 @@ export class ErrorBoundary extends Component<
               <code>{error.message}</code>
             </details>
             <div className="route-state__actions">
-              <button className="secondary-button" type="button" onClick={this.reset}>
-                Retry view
-              </button>
-              <button
-                className="primary-button"
-                type="button"
-                onClick={() => window.location.reload()}
-              >
-                <ReloadIcon />
-                Reload app
-              </button>
+              <Button variant="secondary" onClick={this.reset}>Retry view</Button>
+              <Button leadingIcon={<ReloadIcon />} onClick={() => window.location.reload()}>Reload app</Button>
             </div>
           </CardContent>
         </Card>

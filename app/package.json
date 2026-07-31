@@ -5,19 +5,24 @@
   "type": "module",
   "scripts": {
     "dev": "node ../scripts/run-vite-safe.mjs",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit",
-    "check": "pnpm typecheck && pnpm build",
-    "clean": "node -e \"import('node:fs').then(({rmSync})=>rmSync('dist',{recursive:true,force:true}))\"",
-    "dev:reset": "node ../scripts/reset-dev-state.mjs"
+    "dev:safe": "sh ../scripts/dev.sh",
+    "build": "npm run typecheck && node ../scripts/run-vite-build-safe.mjs",
+    "preview": "node ../scripts/run-vite-preview-safe.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "check": "npm run typecheck && npm run build:only",
+    "build:only": "node ../scripts/run-vite-build-safe.mjs",
+    "clean": "node ../scripts/clean-app.mjs",
+    "dev:reset": "node ../scripts/reset-dev-state.mjs",
+    "doctor": "node ../scripts/dev-doctor.mjs",
+    "install:scripts:validate": "npm run install:scripts:validate --workspace-root",
+    "workspace:validate": "npm run workspace:validate --workspace-root"
   },
   "dependencies": {
-    "@powerchain-protocol/powerpay-checkout-sdk": "file:..",
+    "@powerchain-protocol/powerpay-checkout-sdk": "1.0.0-beta.1",
     "@solana/wallet-adapter-react": "^0.15.39",
     "@solana/wallet-adapter-react-ui": "^0.9.39",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "@radix-ui/react-icons": "^1.3.2",
     "@web3icons/react": "^4.1.17",
     "axios": "^1.19.0",
@@ -30,7 +35,8 @@
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^6.0.5",
     "typescript": "^7.0.2",
-    "vite": "^8.1.5"
+    "vite": "^8.1.5",
+    "@types/node": "^26.1.2"
   },
   "engines": {
     "node": ">=22.12.0 <25",

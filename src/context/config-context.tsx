@@ -8,18 +8,18 @@ import type { PowerPayEnv } from "../config/env.js";
 import type { CurrencyDefinition } from "../lib/currencies.js";
 import { DEFAULT_CURRENCIES } from "../lib/currencies.js";
 
-export interface PowerPayConfig {
+export interface PowerPayProviderConfig {
   env: PowerPayEnv;
   currencies?: CurrencyDefinition[];
 }
 
-const ConfigContext = createContext<PowerPayConfig | null>(null);
+const ConfigContext = createContext<PowerPayProviderConfig | null>(null);
 
 export function PowerPayConfigProvider({
   value,
   children,
 }: {
-  value: PowerPayConfig;
+  value: PowerPayProviderConfig;
   children: ReactNode;
 }) {
   const normalized = useMemo(
@@ -37,7 +37,7 @@ export function PowerPayConfigProvider({
   );
 }
 
-export function usePowerPayConfig(): PowerPayConfig {
+export function usePowerPayConfig(): PowerPayProviderConfig {
   const config = useContext(ConfigContext);
   if (!config) {
     throw new Error(

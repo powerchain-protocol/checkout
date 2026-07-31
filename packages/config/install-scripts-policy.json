@@ -1,0 +1,195 @@
+{
+  "version": "1.0.0-beta.1",
+  "mode": "strict",
+  "approved": {
+    "@prisma/engines": {
+      "reason": "Required to install Prisma query and schema engine binaries.",
+      "requiredFor": [
+        "database",
+        "prisma-generate"
+      ]
+    },
+    "esbuild": {
+      "reason": "Required by Vite to install and verify the platform-specific compiler binary.",
+      "requiredFor": [
+        "app",
+        "vite",
+        "production-build"
+      ]
+    },
+    "prisma": {
+      "reason": "Required by Prisma CLI installation and client generation.",
+      "requiredFor": [
+        "database",
+        "typecheck",
+        "prisma-generate"
+      ]
+    },
+    "protobufjs": {
+      "reason": "Required to generate protobuf runtime helper files used by blockchain dependencies.",
+      "requiredFor": [
+        "sdk",
+        "solana",
+        "stellar"
+      ]
+    }
+  },
+  "denied": {
+    "bigint-buffer": {
+      "reason": "Optional native acceleration; the dependency documents a JavaScript fallback."
+    },
+    "blake-hash": {
+      "reason": "Optional native acceleration; the dependency documents a JavaScript fallback."
+    },
+    "bufferutil": {
+      "reason": "Optional native acceleration; the dependency documents a JavaScript fallback."
+    },
+    "tiny-secp256k1": {
+      "reason": "Optional native acceleration; the dependency documents a JavaScript fallback."
+    },
+    "usb": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "utf-8-validate": {
+      "reason": "Optional native acceleration; the dependency documents a JavaScript fallback."
+    },
+    "@stellar/stellar-sdk": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "axios": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "acorn": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "lightningcss": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "terser": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@nanostores/lit": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "lru-cache": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "yargs": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "node-fetch": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@solana/buffer-layout": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@solana/buffer-layout-utils": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "cross-fetch": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "eventsource": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "uuid": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@tybys/wasm-util": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "web-streams-polyfill": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "assert": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "get-caller-file": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "whatwg-fetch": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@fractalwagmi/solana-wallet-adapter": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@toruslabs/solana-embed": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@react-native/codegen": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@fractalwagmi/popup-connection": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@project-serum/sol-wallet-adapter": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@toruslabs/http-helpers": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "cliui": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "y18n": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "yargs-parser": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "mime": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "jwt-decode": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "detect-browser": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "ci-info": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "error-stack-parser": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "webrtc-adapter": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@toruslabs/metadata-helpers": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "ethereum-cryptography": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "xrpl": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "keyvaluestorage-interface": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "zod": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "stackframe": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@stellar/stellar-base": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "pino-abstract-transport": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "sonic-boom": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "thread-stream": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "marky": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    },
+    "@stellar/js-xdr": {
+      "reason": "Not required during installation of the published registry package; build or repository-maintainer hook is denied."
+    }
+  }
+}

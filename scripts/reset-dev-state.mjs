@@ -1,21 +1,25 @@
 import { rmSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import {
+  assertNotActiveDirectory,
+  assertRepositoryPath,
+  repositoryRoot,
+} from "./lib/safe-paths.mjs";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const root = repositoryRoot(import.meta.url);
 
-for (const relative of [
+for (const relativePath of [
   "app/node_modules/.vite",
   "node_modules/.vite",
+  "app/.vite",
   "app/dist",
 ]) {
-  const path = resolve(root, relative);
-  rmSync(path, { recursive: true, force: true });
-  console.log(`Removed ${path}`);
+  const target = assertRepositoryPath(root, relativePath, "development reset target");
+  assertNotActiveDirectory(target, root);
+  rmSync(target, { recursive: true, force: true });
+  console.log(`Removed ${relativePath}`);
 }
 
 console.log("");
-console.log("Development state reset.");
-console.log("Start from a new terminal:");
-console.log(`  cd ${root}`);
-console.log("  npm run dev");
+console.log("Development state reset safely.");
+console.log(`Repository: ${root}`);
+console.log("Start with: npm run dev");
