@@ -1,0 +1,12 @@
+{
+  "rules": [
+    {
+      "pathPattern": "/api/v1/actions/**",
+      "apiPath": "/api/v1/actions/**"
+    },
+    {
+      "pathPattern": "/checkout/**",
+      "apiPath": "/api/v1/actions/checkout/**"
+    }
+  ]
+}

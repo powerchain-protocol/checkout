@@ -1,0 +1,3 @@
+import { ConnectButton, ThemeToggle } from "@powerpay/sdk";
+import { Brand } from "./Brand";
+export function AppHeader(){return <header className="app-header"><Brand/><nav aria-label="Primary"><a className="active" href="#overview">Overview</a><a href="#payments">Payments</a><a href="#developers">Developers</a></nav><div className="header-actions"><span className="network-chip"><i/>Devnet</span><ThemeToggle/><ConnectButton/></div></header>}

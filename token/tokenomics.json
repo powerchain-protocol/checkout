@@ -1,0 +1,20 @@
+{
+  "token": "PowerPay",
+  "ticker": "PWRP",
+  "standard": "Token-2022",
+  "decimals": 6,
+  "maximumSupply": 1000000000,
+  "initialMint": 1000000000,
+  "allocations": {
+    "ecosystemAndMerchantRewardsPercent": 35,
+    "treasuryPercent": 25,
+    "teamAndContributorsPercent": 15,
+    "liquidityPercent": 15,
+    "communityAndGrantsPercent": 10
+  },
+  "notes": [
+    "Allocation percentages are a design proposal, not legal or financial advice.",
+    "Use vesting accounts or audited vesting programs before distributing team allocations.",
+    "Revoke mint authority only after supply and treasury controls are finalized. Revocation is permanent."
+  ]
+}

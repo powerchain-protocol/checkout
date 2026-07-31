@@ -1,0 +1,212 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../database/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  OPERATOR
+  VIEWER
+  CUSTOMER
+}
+
+enum PaymentStatus {
+  DRAFT
+  PENDING
+  SUBMITTED
+  CONFIRMED
+  FINALIZED
+  FAILED
+  EXPIRED
+  REFUNDED
+}
+
+enum TransferStatus {
+  CREATED
+  SOURCE_SUBMITTED
+  ATTESTING
+  DESTINATION_READY
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id            String   @id @db.Uuid
+  email         String?  @unique
+  displayName   String
+  role          UserRole
+  walletAddress String?  @unique
+  merchantId    String?  @db.Uuid
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  merchant      Merchant? @relation(fields: [merchantId], references: [id])
+  invoices      Invoice[] @relation("CustomerInvoices")
+
+  @@index([merchantId])
+  @@map("users")
+}
+
+model Merchant {
+  id          String   @id @db.Uuid
+  name        String
+  slug        String   @unique
+  authority   String   @unique
+  treasury    String
+  feeTreasury String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       User[]
+  invoices    Invoice[]
+  payments    Payment[]
+
+  @@map("merchants")
+}
+
+model Invoice {
+  id          String        @id @db.Uuid
+  number      String
+  merchantId  String        @db.Uuid
+  customerId  String?       @db.Uuid
+  currency    String
+  subtotal    Decimal       @db.Decimal(36, 18)
+  tax         Decimal       @db.Decimal(36, 18)
+  total       Decimal       @db.Decimal(36, 18)
+  status      PaymentStatus @default(DRAFT)
+  dueAt       DateTime?
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  merchant    Merchant      @relation(fields: [merchantId], references: [id])
+  customer    User?         @relation("CustomerInvoices", fields: [customerId], references: [id])
+  lines       InvoiceLine[]
+  fees        InvoiceFee[]
+  payments    Payment[]
+
+  @@unique([merchantId, number])
+  @@index([customerId])
+  @@map("invoices")
+}
+
+model InvoiceLine {
+  id          String   @id @db.Uuid
+  invoiceId   String   @db.Uuid
+  name        String
+  description String?
+  quantity    Int
+  unitAmount  Decimal  @db.Decimal(36, 18)
+  taxRate     Decimal? @db.Decimal(8, 4)
+
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("invoice_lines")
+}
+
+model InvoiceFee {
+  id        String  @id @db.Uuid
+  invoiceId String  @db.Uuid
+  code      String
+  label     String
+  amount    Decimal @db.Decimal(36, 18)
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("invoice_fees")
+}
+
+model Payment {
+  id             String        @id @db.Uuid
+  merchantId     String        @db.Uuid
+  invoiceId      String?       @db.Uuid
+  orderId        String
+  payer          String?
+  recipient      String
+  currency       String
+  mint           String?
+  amount         Decimal       @db.Decimal(36, 18)
+  amountAtomic   String?
+  decimals       Int?
+  reference      String        @unique
+  signature      String?       @unique
+  status         PaymentStatus @default(PENDING)
+  cluster        String
+  metadata       Json?
+  expiresAt      DateTime
+  confirmedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  merchant       Merchant      @relation(fields: [merchantId], references: [id])
+  invoice        Invoice?      @relation(fields: [invoiceId], references: [id])
+  crossBorder    CrossBorderTransfer?
+
+  @@unique([merchantId, orderId])
+  @@index([invoiceId])
+  @@index([status, expiresAt])
+  @@map("payments")
+}
+
+model CrossBorderTransfer {
+  id                   String         @id @db.Uuid
+  paymentId            String         @unique @db.Uuid
+  sourceNetwork        String
+  destinationNetwork   String
+  route                String
+  sourceSignature      String?
+  cctpMessageHash      String?
+  cctpAttestation      String?
+  destinationSignature String?
+  status               TransferStatus @default(CREATED)
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  payment              Payment        @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@map("cross_border_transfers")
+}
+
+model TrustedToken {
+  id           String   @id @db.Uuid
+  network      String
+  mint         String
+  symbol       String
+  name         String
+  decimals     Int
+  tokenProgram String
+  status       String
+  issuer       String?
+  stable       Boolean  @default(false)
+  metadata     Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([network, mint])
+  @@index([symbol, status])
+  @@map("trusted_tokens")
+}
+
+model ZkVerification {
+  id           String   @id @db.Uuid
+  subjectType  String
+  subjectId    String
+  circuit      String
+  version      String
+  proofHash    String
+  verifier     String
+  valid        Boolean
+  publicInputs Json
+  verifiedAt   DateTime @default(now())
+
+  @@index([subjectType, subjectId])
+  @@map("zk_verifications")
+}

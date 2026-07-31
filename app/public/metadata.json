@@ -1,0 +1,57 @@
+{
+  "name": "PowerPay",
+  "symbol": "PWRP",
+  "description": "PowerPay is a cross-border payments token for the PowerPay and PowerChain ecosystem.",
+  "image": "/assets/pwrp-coin.png",
+  "icon": "/icons/powerpay-mark-512.png",
+  "external_url": "https://powerpay.example",
+  "attributes": [
+    {
+      "trait_type": "Network",
+      "value": "Solana"
+    },
+    {
+      "trait_type": "Token Standard",
+      "value": "Token-2022"
+    },
+    {
+      "trait_type": "Category",
+      "value": "Cross-border payments"
+    }
+  ],
+  "properties": {
+    "category": "image",
+    "files": [
+      {
+        "uri": "/assets/pwrp-coin.png",
+        "type": "image/png"
+      },
+      {
+        "uri": "/assets/pwrp-coin.svg",
+        "type": "image/svg+xml"
+      },
+      {
+        "uri": "/icons/powerpay-mark.svg",
+        "type": "image/svg+xml"
+      }
+    ]
+  },
+  "standard": "Token-2022",
+  "program": {
+    "powerpay": "${VITE_SOLANA_PROGRAM_ID}",
+    "powerchain": "${VITE_POWERCHAIN_PROGRAM_ID}"
+  },
+  "merchant": {
+    "authority": "${VITE_MERCHANT_AUTHORITY}",
+    "treasury": "${VITE_MERCHANT_TREASURY}",
+    "feeTreasury": "${VITE_MERCHANT_FEE_TREASURY}"
+  },
+  "integrations": {
+    "solanaPay": true,
+    "splToken": true,
+    "token2022": true,
+    "metaplexTokenMetadata": true,
+    "pythHermes": true,
+    "heliusRpc": true
+  }
+}

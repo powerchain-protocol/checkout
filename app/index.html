@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <meta name="theme-color" content="#08291e" />
+    <link rel="icon" href="/icons/favicon.ico" />
+    <title>PowerPay — Merchant Checkout</title>
+    <style>
+      html, body, #root { min-height: 100%; }
+      body {
+        margin: 0;
+        background: #f6f8f7;
+        color: #10231c;
+        font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      }
+      .boot-screen {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+      .boot-card {
+        width: min(520px, 100%);
+        padding: 24px;
+        border: 1px solid #d8e1dd;
+        border-radius: 18px;
+        background: white;
+        box-shadow: 0 18px 50px rgba(9, 40, 29, .08);
+      }
+      .boot-card h1 { margin: 0 0 8px; }
+      .boot-card p { margin: 0; color: #5f7069; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <main class="boot-screen" id="powerpay-boot">
+        <section class="boot-card">
+          <h1>Starting PowerPay…</h1>
+          <p>The application is loading its interface and wallet providers.</p>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

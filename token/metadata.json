@@ -1,0 +1,15 @@
+{
+  "$schema": "../schemas/token-metadata.schema.json",
+  "name": "PowerPay",
+  "symbol": "PWRP",
+  "description": "PowerPay utility token metadata for the beta checkout SDK.",
+  "image": "/assets/pwrp-coin.svg",
+  "decimals": 9,
+  "standard": "token-2022",
+  "website": "https://github.com/powerchain-protocol/powerpay-checkout-sdk",
+  "tags": ["payments", "solana", "checkout"],
+  "extensions": {
+    "documentation": "/docs/TOKEN_METADATA.md",
+    "releaseChannel": "beta"
+  }
+}

@@ -1,0 +1,267 @@
+openapi: 3.1.0
+info:
+  title: PowerPay API
+  version: 1.0.0-beta.1
+  summary: Solana-native merchant payment API
+  description: |
+    Beta API for creating Solana Pay transfer requests, checking service
+    health, and reconciling PowerPay merchant payments.
+  license:
+    name: Apache-2.0
+servers:
+  - url: https://api.example.com
+    description: Replace with the deployed PowerPay API origin
+  - url: http://localhost:3000
+    description: Local development
+tags:
+  - name: System
+  - name: Payments
+  - name: Sessions
+paths:
+  /api/v1/health:
+    get:
+      operationId: getHealth
+      tags: [System]
+      summary: Check API and cluster status
+      responses:
+        "200":
+          description: Service health
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /api/v1/payments:
+    post:
+      operationId: createPayment
+      tags: [Payments]
+      summary: Create a Solana Pay payment request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentRequest"
+      responses:
+        "201":
+          description: Payment request created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /api/v1/payments/{paymentId}:
+    get:
+      operationId: getPayment
+      tags: [Payments]
+      summary: Read a payment resource
+      parameters:
+        - in: path
+          name: paymentId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Payment resource
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        "404":
+          description: Payment not found
+
+
+  /api/v1/sessions:
+    post:
+      operationId: createSession
+      tags: [Sessions]
+      summary: Create a hosted checkout session
+      responses:
+        "201":
+          description: Checkout session created
+        "400":
+          $ref: "#/components/responses/BadRequest"
+  /api/v1/sessions/{sessionId}:
+    get:
+      operationId: getSession
+      tags: [Sessions]
+      summary: Read a checkout session
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Checkout session
+        "404":
+          description: Session not found
+  /api/v1/cors:
+    get:
+      operationId: getCorsPolicy
+      tags: [System]
+      summary: Read the public CORS policy
+      responses:
+        "200":
+          description: CORS policy
+    options:
+      operationId: preflightCors
+      tags: [System]
+      summary: Perform a CORS preflight
+      responses:
+        "204":
+          description: Preflight accepted
+
+  /api/v1/trusted-tokens:
+    get:
+      operationId: listTrustedTokens
+      tags: [Payments]
+      summary: List approved token mints
+      responses:
+        "200":
+          description: Trusted token registry
+  /api/v1/cross-border:
+    post:
+      operationId: createCrossBorderTransfer
+      tags: [Payments]
+      summary: Create a cross-border native USDC transfer
+      responses:
+        "201":
+          description: Cross-border transfer created
+        "400":
+          $ref: "#/components/responses/BadRequest"
+components:
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+    InternalError:
+      description: Internal service failure
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiError"
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, version, timestamp, cluster]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+        version:
+          type: string
+          example: 1.0.0-beta.1
+        timestamp:
+          type: string
+          format: date-time
+        cluster:
+          type: string
+    CreatePaymentRequest:
+      type: object
+      required: [merchant, amount, currency, orderId]
+      properties:
+        merchant:
+          type: string
+          description: On-curve Solana merchant wallet address
+        amount:
+          type: string
+          pattern: '^\d+(?:\.\d+)?$'
+          example: "12.50"
+        currency:
+          type: string
+          example: USDC
+        mint:
+          type: string
+          description: Required for SPL and Token-2022 payments
+        orderId:
+          type: string
+          maxLength: 128
+        label:
+          type: string
+          maxLength: 64
+        message:
+          type: string
+          maxLength: 256
+        memo:
+          type: string
+          maxLength: 566
+        expiresInSeconds:
+          type: integer
+          minimum: 60
+          maximum: 86400
+          default: 900
+    Payment:
+      type: object
+      required:
+        - id
+        - orderId
+        - merchant
+        - amount
+        - currency
+        - status
+        - reference
+        - paymentUrl
+        - createdAt
+        - expiresAt
+      properties:
+        id:
+          type: string
+        orderId:
+          type: string
+        merchant:
+          type: string
+        amount:
+          type: string
+        currency:
+          type: string
+        mint:
+          type: string
+        status:
+          type: string
+          enum:
+            - draft
+            - pending
+            - submitted
+            - confirmed
+            - finalized
+            - failed
+            - expired
+            - refunded
+        reference:
+          type: string
+        paymentUrl:
+          type: string
+          format: uri
+        qrDataUrl:
+          type: string
+        signature:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+    ApiError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details: {}
+            requestId:
+              type: string

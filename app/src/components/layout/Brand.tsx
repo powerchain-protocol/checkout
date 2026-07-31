@@ -1,0 +1,1 @@
+export function Brand(){return <a className="brand" href="#" aria-label="PowerPay home"><span className="brand-icon"><img src="/icons/powerpay-mark.svg" alt=""/></span><span><strong>POWER PAY</strong><small>CROSS-BORDER PAYMENTS</small></span></a>}

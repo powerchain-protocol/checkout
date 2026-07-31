@@ -1,0 +1,1 @@
+interface Props{label:string;value:string;change:string;index:number}export function MetricCard({label,value,change,index}:Props){return <article className="metric-card"><div className="metric-top"><span>{label}</span><span className="metric-icon">{['↗','✓','⚡'][index]}</span></div><strong>{value}</strong><small className={change==='Live'?'live':''}>{change}</small></article>}
